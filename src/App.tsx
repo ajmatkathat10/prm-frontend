@@ -3,15 +3,22 @@ import WelcomePage from '@/pages/WelcomePage';
 import LoginPage from '@/pages/LoginPage';
 import ChangePasswordPage from '@/pages/ChangePasswordPage';
 import AdminDashboard from '@/pages/AdminDashboard';
+import EmployeesPage from '@/pages/EmployeesPage';
+import ProjectsPage from '@/pages/ProjectsPage';
+import AllocationsPage from '@/pages/AllocationsPage';
+import UsersPage from '@/pages/UsersPage';
+import SettingsPage from '@/pages/SettingsPage';
 import ManagerDashboard from '@/pages/ManagerDashboard';
 import EmployeeDashboard from '@/pages/EmployeeDashboard';
 import AuthLayout from '@/components/AuthLayout';
 import DashboardLayout from '@/components/DashboardLayout';
 import RoleGuard from '@/components/RoleGuard';
+import { Spinner } from '@/components/ui/Spinner';
 
 function App() {
   return (
     <Router>
+      <Spinner global />
       <Routes>
         <Route path="/" element={<WelcomePage />} />
 
@@ -27,6 +34,46 @@ function App() {
             element={
               <RoleGuard allowedRoles={['ADMIN']}>
                 <AdminDashboard />
+              </RoleGuard>
+            }
+          />
+          <Route
+            path="admin/employees"
+            element={
+              <RoleGuard allowedRoles={['ADMIN']}>
+                <EmployeesPage />
+              </RoleGuard>
+            }
+          />
+          <Route
+            path="admin/projects"
+            element={
+              <RoleGuard allowedRoles={['ADMIN']}>
+                <ProjectsPage />
+              </RoleGuard>
+            }
+          />
+          <Route
+            path="admin/allocations"
+            element={
+              <RoleGuard allowedRoles={['ADMIN']}>
+                <AllocationsPage />
+              </RoleGuard>
+            }
+          />
+          <Route
+            path="admin/users"
+            element={
+              <RoleGuard allowedRoles={['ADMIN']}>
+                <UsersPage />
+              </RoleGuard>
+            }
+          />
+          <Route
+            path="admin/settings"
+            element={
+              <RoleGuard allowedRoles={['ADMIN']}>
+                <SettingsPage />
               </RoleGuard>
             }
           />

@@ -4,10 +4,8 @@ import {
   Briefcase,
   UserCheck,
   Settings,
-  ShieldCheck,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
 import { STRINGS } from "@/constants/strings";
 
 const adminOptions = [
@@ -59,22 +57,11 @@ const adminOptions = [
 ];
 
 export default function AdminDashboard() {
-  const { user } = useAuth();
-
   return (
     <div className="p-6 lg:p-8 space-y-8">
       {/* Header */}
       <div>
-        <div className="flex items-center gap-3 mb-1">
-          <div className="w-8 h-8 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center">
-            <ShieldCheck className="w-4 h-4 text-slate-300" />
-          </div>
-          <span className="text-xs font-semibold text-slate-400 uppercase tracking-widest">{STRINGS.DASHBOARD.ADMIN_PANEL}</span>
-        </div>
         <h1 className="text-3xl font-bold text-slate-50">{STRINGS.DASHBOARD.SYSTEM_CONTROL}</h1>
-        <p className="text-slate-400 mt-1">
-          {STRINGS.DASHBOARD.ADMIN_WELCOME_PREFIX}{user?.username || STRINGS.ROLES.ADMIN_FULL}{STRINGS.DASHBOARD.ADMIN_WELCOME_SUFFIX}
-        </p>
       </div>
 
       {/* Grid of Admin Options */}
