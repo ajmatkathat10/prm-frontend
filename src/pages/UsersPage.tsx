@@ -127,7 +127,7 @@ export default function UsersPage() {
       setCopiedNewTempPass(false);
       refetch();
     } catch {
-      // no-op
+      // Handled by toast middleware
     }
   };
 
@@ -138,7 +138,7 @@ export default function UsersPage() {
       setSelectedUserForDeactivate(null);
       refetch();
     } catch {
-      // no-op
+      // Handled by toast middleware
     }
   };
 
@@ -149,7 +149,7 @@ export default function UsersPage() {
       setSelectedUserForReactivate(null);
       refetch();
     } catch {
-      // no-op
+      // Handled by toast middleware
     }
   };
 

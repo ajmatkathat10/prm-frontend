@@ -150,6 +150,22 @@ button:hover {
   opacity: 0.9 !important;
 }
 
+/* Simple linear toast slide animation */
+@keyframes slide-in {
+  from {
+    transform: translateY(1rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.1s linear forwards;
+}
+
 
 /* Force-override filled buttons to a consistent neutral theme */
 button.bg-indigo-600,

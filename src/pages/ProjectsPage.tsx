@@ -133,7 +133,7 @@ export default function ProjectsPage() {
       setEditProj(null);
       refetchProjects();
     } catch {
-      // no-op
+      // Handled by toast middleware
     }
   };
 
@@ -155,7 +155,7 @@ export default function ProjectsPage() {
       setMsSP(0);
       refetchProjects();
     } catch {
-      // no-op
+      // Handled by toast middleware
     }
   };
 
@@ -170,7 +170,7 @@ export default function ProjectsPage() {
       setSelectedProj(updated);
       refetchProjects();
     } catch {
-      // no-op
+      // Handled by toast middleware
     }
   };
 

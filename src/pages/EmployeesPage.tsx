@@ -62,48 +62,34 @@ export default function EmployeesPage() {
     if (!selectedEmp || !newSkillName.trim()) return;
 
     try {
-      await addSkill({
+      const updated = await addSkill({
         employeeId: selectedEmp._id,
         name: newSkillName.trim(),
         category: newSkillCategory,
         proficiency: newSkillProficiency,
       }).unwrap();
       
-      // Update selected employee in state
-      setSelectedEmp(prev => prev ? {
-        ...prev,
-        skills: [...prev.skills, {
-          skillId: { name: newSkillName.trim(), category: newSkillCategory, _id: '' },
-          proficiency: newSkillProficiency
-        }]
-      } : null);
-
+      setSelectedEmp(updated);
       setNewSkillName('');
       refetchEmployees();
     } catch {
-      // no-op
+      // Handled by toast middleware
     }
   };
 
   const handleUpdateSkill = async (skillId: string, prof: 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED') => {
     if (!selectedEmp) return;
     try {
-      await updateSkill({
+      const updated = await updateSkill({
         employeeId: selectedEmp._id,
         skillId,
         proficiency: prof,
       }).unwrap();
       
-      setSelectedEmp(prev => prev ? {
-        ...prev,
-        skills: prev.skills.map(s => {
-          const sId = typeof s.skillId === 'object' ? s.skillId._id : s.skillId;
-          return sId === skillId ? { ...s, proficiency: prof } : s;
-        })
-      } : null);
+      setSelectedEmp(updated);
       refetchEmployees();
     } catch {
-      // no-op
+      // Handled by toast middleware
     }
   };
 
@@ -112,21 +98,15 @@ export default function EmployeesPage() {
     if (!confirm('Are you sure you want to remove this skill?')) return;
 
     try {
-      await removeSkill({
+      const updated = await removeSkill({
         employeeId: selectedEmp._id,
         skillId,
       }).unwrap();
       
-      setSelectedEmp(prev => prev ? {
-        ...prev,
-        skills: prev.skills.filter(s => {
-          const sId = typeof s.skillId === 'object' ? s.skillId._id : s.skillId;
-          return sId !== skillId;
-        })
-      } : null);
+      setSelectedEmp(updated);
       refetchEmployees();
     } catch {
-      // no-op
+      // Handled by toast middleware
     }
   };
 
@@ -137,7 +117,7 @@ export default function EmployeesPage() {
       setShowDeactivateModal(null);
       refetchEmployees();
     } catch {
-      // no-op
+      // Handled by toast middleware
     }
   };
 

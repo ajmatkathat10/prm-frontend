@@ -36,7 +36,7 @@ export default function SettingsPage() {
       setTimeout(() => setShowNotifier(false), 3000);
       refetch();
     } catch {
-      // no-op
+      // Handled by toast middleware
     }
   };
 
