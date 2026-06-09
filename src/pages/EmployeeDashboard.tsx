@@ -3,10 +3,8 @@ import {
   Briefcase,
   History,
   AlertTriangle,
-  UserCircle,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
 import { STRINGS } from "@/constants/strings";
 
 const employeeOptions = [
@@ -40,8 +38,6 @@ const employeeOptions = [
 ];
 
 export default function EmployeeDashboard() {
-  const { user } = useAuth();
-
   // Mock reminder flag for week (BRD Screen 5 shows reminder if latest timesheet is missing)
   const showReminder = true;
   const reminderWeek = "29-May-2026"; // Example date matching seeding/context timeframe
@@ -50,16 +46,7 @@ export default function EmployeeDashboard() {
     <div className="p-6 lg:p-8 space-y-8">
       {/* Header */}
       <div>
-        <div className="flex items-center gap-3 mb-1">
-          <div className="w-8 h-8 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center">
-            <UserCircle className="w-4 h-4 text-slate-300" />
-          </div>
-          <span className="text-xs font-semibold text-slate-400 uppercase tracking-widest">{STRINGS.DASHBOARD.EMPLOYEE_PORTAL}</span>
-        </div>
         <h1 className="text-3xl font-bold text-slate-50">{STRINGS.DASHBOARD.MY_WORKSPACE}</h1>
-        <p className="text-slate-400 mt-1">
-          {STRINGS.DASHBOARD.EMPLOYEE_WELCOME_PREFIX}{user?.username || ""}{STRINGS.DASHBOARD.EMPLOYEE_WELCOME_SUFFIX}
-        </p>
       </div>
 
       {/* V4 Timesheet Reminder Banner */}

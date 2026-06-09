@@ -1,14 +1,117 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0F172A; /* Slate 900 */
-  --foreground: #F8FAFC; /* Slate 50 */
+  --background: #f8fafc;
+  --foreground: #0f172a;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* Redefine all slate variables to force light mode */
+  --color-slate-955: #f8fafc;
+  --color-slate-950: #f8fafc;
+  --color-slate-900: #ffffff;
+  --color-slate-850: #f1f5f9;
+  --color-slate-800: #e2e8f0;
+  --color-slate-750: #cbd5e1;
+  --color-slate-700: #cbd5e1;
+  --color-slate-600: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-slate-400: #475569;
+  --color-slate-300: #334155;
+  --color-slate-200: #1e293b;
+  --color-slate-100: #0f172a;
+  --color-slate-50: #0f172a;
+
+  /* Redefine all indigo variables to grayscale (primary branding/actions) */
+  --color-indigo-50: #f8fafc;
+  --color-indigo-100: #f1f5f9;
+  --color-indigo-200: #e2e8f0;
+  --color-indigo-300: #cbd5e1;
+  --color-indigo-400: #475569;
+  --color-indigo-455: #475569;
+  --color-indigo-500: #0f172a; /* primary buttons */
+  --color-indigo-600: #000000; /* hover button states */
+  --color-indigo-700: #000000;
+  --color-indigo-800: #000000;
+  --color-indigo-850: #f1f5f9;
+  --color-indigo-900: #f1f5f9; /* active page background */
+  --color-indigo-955: #f8fafc;
+  --color-indigo-950: #f8fafc;
+
+  /* Redefine all rose variables to grayscale (destructive/critical/admin) */
+  --color-rose-50: #f8fafc;
+  --color-rose-100: #f1f5f9;
+  --color-rose-200: #e2e8f0;
+  --color-rose-300: #475569;
+  --color-rose-455: #475569;
+  --color-rose-400: #475569;
+  --color-rose-500: #0f172a;
+  --color-rose-600: #e2e8f0;
+  --color-rose-700: #cbd5e1;
+  --color-rose-800: #94a3b8;
+  --color-rose-900: #f1f5f9;
+  --color-rose-955: #f8fafc;
+  --color-rose-950: #f8fafc;
+
+  /* Redefine all emerald variables to grayscale (success/allocations) */
+  --color-emerald-50: #f8fafc;
+  --color-emerald-100: #f1f5f9;
+  --color-emerald-200: #e2e8f0;
+  --color-emerald-300: #475569;
+  --color-emerald-455: #475569;
+  --color-emerald-400: #475569;
+  --color-emerald-500: #0f172a;
+  --color-emerald-600: #e2e8f0;
+  --color-emerald-700: #cbd5e1;
+  --color-emerald-800: #94a3b8;
+  --color-emerald-900: #f1f5f9;
+  --color-emerald-955: #f8fafc;
+  --color-emerald-950: #f8fafc;
+
+  /* Redefine all amber variables to grayscale (warning/pending) */
+  --color-amber-50: #f8fafc;
+  --color-amber-100: #f1f5f9;
+  --color-amber-200: #e2e8f0;
+  --color-amber-300: #475569;
+  --color-amber-455: #475569;
+  --color-amber-400: #475569;
+  --color-amber-500: #0f172a;
+  --color-amber-600: #e2e8f0;
+  --color-amber-700: #cbd5e1;
+  --color-amber-800: #94a3b8;
+  --color-amber-900: #f1f5f9;
+  --color-amber-955: #f8fafc;
+  --color-amber-950: #f8fafc;
+
+  /* Redefine all red variables to grayscale */
+  --color-red-50: #f8fafc;
+  --color-red-100: #f1f5f9;
+  --color-red-200: #e2e8f0;
+  --color-red-300: #0f172a;
+  --color-red-400: #475569;
+  --color-red-450: #475569;
+  --color-red-500: #0f172a;
+  --color-red-600: #e2e8f0;
+  --color-red-700: #cbd5e1;
+  --color-red-800: #cbd5e1;
+  --color-red-900: #f1f5f9;
+  --color-red-950: #f8fafc;
+
+  /* Redefine all green variables to grayscale */
+  --color-green-50: #f8fafc;
+  --color-green-100: #f1f5f9;
+  --color-green-200: #e2e8f0;
+  --color-green-300: #475569;
+  --color-green-400: #475569;
+  --color-green-455: #475569;
+  --color-green-500: #0f172a;
+  --color-green-600: #e2e8f0;
+  --color-green-700: #cbd5e1;
+  --color-green-800: #94a3b8;
+  --color-green-900: #f1f5f9;
+  --color-green-950: #f8fafc;
 }
 
 body {
@@ -19,4 +122,68 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+/* Force-removal of glowing shadow effects, custom backgrounds and transitions to simplify UI */
+* {
+  text-shadow: none !important;
+  box-shadow: none !important;
+  transition: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Standard thin border for clean input fields and card boundaries */
+input, select, textarea {
+  border: 1px solid #cbd5e1 !important;
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+/* Subtle default focus outline */
+input:focus, select:focus, textarea:focus {
+  border-color: #0f172a !important;
+  outline: none !important;
+}
+
+/* Basic hover states */
+button:hover {
+  opacity: 0.9 !important;
+}
+
+/* Simple linear toast slide animation */
+@keyframes slide-in {
+  from {
+    transform: translateY(1rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.1s linear forwards;
+}
+
+
+/* Force-override filled buttons to a consistent neutral theme */
+button.bg-indigo-600,
+button.bg-rose-600,
+button.bg-amber-600,
+button.bg-emerald-600,
+button.bg-slate-800 {
+  background-color: #0f172a !important;
+  color: #ffffff !important;
+  border: 1px solid #0f172a !important;
+}
+
+button.bg-indigo-600:hover,
+button.bg-rose-600:hover,
+button.bg-amber-600:hover,
+button.bg-emerald-600:hover,
+button.bg-slate-800:hover {
+  background-color: #334155 !important;
+  border-color: #334155 !important;
+  color: #ffffff !important;
 }

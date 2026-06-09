@@ -98,6 +98,31 @@ When a Manager ends an allocation, the employee's status is **recomputed immedia
 
 ---
 
+## Flow 7: Admin: Create User Account
+
+This flow represents the user account creation process by an Admin, which automatically creates an Employee work profile for software engineers and managers.
+
+![Sequence Diagram — Admin Create User Account](./assets/sequence-admin-create-user.png)
+
+**Key Points:**
+- The Admin initiates account creation with a temporary password which must satisfy server-side validation strength.
+- If the role selected is `EMPLOYEE` or `MANAGER`, the `UserService` automatically cascades profile creation to the `Employee` collection with standard default values (bench status, engineering department).
+
+---
+
+## Flow 8: Admin: Deactivate Employee
+
+This flow handles the deactivation of a work profile, enforcing soft deletion and cleanup cascading.
+
+![Sequence Diagram — Admin Deactivate Employee](./assets/sequence-admin-deactivate-employee.png)
+
+**Key Points:**
+- An Admin cannot deactivate their own active administrator profile.
+- Deactivating an employee record sets `isActive` to `false` and status to `INACTIVE`.
+- The linked `User` login account is automatically blocked, and all active allocations are immediately set to `status = ENDED` and `toDate = today`.
+
+---
+
 ## Interaction Summary Table
 
 | Flow | Initiator | Server Components Involved | External Calls |
@@ -110,6 +135,8 @@ When a Manager ends an allocation, the employee's status is **recomputed immedia
 | End Allocation | Manager | AllocationAPI, EmployeeAPI, DB | None |
 | Background Scheduler | System (timer) | SchedulerService, AllocationAPI, ProjectAPI, TimesheetAPI, DB | None |
 | AI Risk Summary | Manager | ProjectAPI, AIService, DB | LLM Provider |
+| Create User Account | Admin | UserAPI, EmployeeAPI, DB | None |
+| Deactivate Employee | Admin | EmployeeAPI, UserAPI, AllocationAPI, DB | None |
 
 ---
 
@@ -122,3 +149,4 @@ When a Manager ends an allocation, the employee's status is **recomputed immedia
 5. **Security:** API keys, passwords, and tokens never flow to the console client beyond what's necessary.
 6. **Team scoping is server-enforced (V4).** Manager-level queries always include a `manager_id` filter. Bypassing the UI cannot expose cross-team data.
 7. **End allocation is immediate (V4).** Employee bench status is updated inline when an allocation ends — no scheduler delay.
+8. **Admin deactivation cascade (V4):** Soft deactivation of an Employee profile blocks the linked User account and terminates all current allocations immediately.
