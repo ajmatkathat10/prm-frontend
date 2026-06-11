@@ -43,6 +43,7 @@ export default function UsersPage() {
   const [username, setUsername] = useState('');
   const [tempPassword, setTempPassword] = useState('');
   const [role, setRole] = useState<'ADMIN' | 'MANAGER' | 'EMPLOYEE'>('EMPLOYEE');
+  const [designation, setDesignation] = useState('Software Engineer');
 
   // Forms State - Reset Password
   const [newTempPassword, setNewTempPassword] = useState('');
@@ -94,6 +95,7 @@ export default function UsersPage() {
         username,
         password: tempPassword,
         role,
+        designation: role === 'EMPLOYEE' ? designation : undefined,
       }).unwrap();
 
       setFullName('');
@@ -101,6 +103,7 @@ export default function UsersPage() {
       setUsername('');
       setTempPassword('');
       setRole('EMPLOYEE');
+      setDesignation('Software Engineer');
       setShowTempPass(false);
       setCopiedTempPass(false);
       refetch();
@@ -377,6 +380,25 @@ export default function UsersPage() {
                 <option value="ADMIN">System Administrator</option>
               </select>
             </div>
+
+            {role === 'EMPLOYEE' && (
+              <div className="space-y-1">
+                <label className="block text-sm font-semibold text-slate-300">Resource Designation</label>
+                <select
+                  value={designation}
+                  onChange={(e) => setDesignation(e.target.value)}
+                  className="w-full bg-slate-800 border border-slate-700 text-slate-100 rounded-lg px-4 py-2.5 outline-none focus:border-rose-500"
+                >
+                  <option value="Junior Software Engineer">Junior Software Engineer</option>
+                  <option value="Software Engineer">Software Engineer</option>
+                  <option value="Senior Software Engineer">Senior Software Engineer</option>
+                  <option value="Devops Engineer">Devops Engineer</option>
+                  <option value="Senior Devops engineer">Senior Devops engineer</option>
+                  <option value="UI Tester">UI Tester</option>
+                  <option value="Senior UI Tester">Senior UI Tester</option>
+                </select>
+              </div>
+            )}
 
             <button
               type="submit"

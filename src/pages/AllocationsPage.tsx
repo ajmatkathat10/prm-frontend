@@ -10,10 +10,10 @@ export default function AllocationsPage() {
 
   // Filter allocations locally for fast responsiveness
   const filteredAllocations = allocations.filter((alloc) => {
-    const employeeName = alloc.employeeId?.fullName || '';
+    const resourceName = alloc.resourceId?.fullName || '';
     const projectName = alloc.projectId?.name || '';
     
-    const matchesEmp = employeeName.toLowerCase().includes(empSearch.toLowerCase().trim());
+    const matchesEmp = resourceName.toLowerCase().includes(empSearch.toLowerCase().trim());
     const matchesProj = projectName.toLowerCase().includes(projSearch.toLowerCase().trim());
     
     return matchesEmp && matchesProj;
@@ -38,7 +38,7 @@ export default function AllocationsPage() {
           <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
-            placeholder="Search by Employee..."
+            placeholder="Search by Resource..."
             value={empSearch}
             onChange={(e) => setEmpSearch(e.target.value)}
             className="w-full bg-slate-800 border border-slate-700 text-slate-200 text-sm rounded-lg pl-9 pr-4 py-2 outline-none focus:border-emerald-500"
@@ -69,8 +69,7 @@ export default function AllocationsPage() {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="border-b border-slate-800 text-slate-400 text-xs font-semibold uppercase bg-slate-950">
-                  <th className="px-6 py-4">Employee</th>
-                  <th className="px-6 py-4">Department</th>
+                  <th className="px-6 py-4">Resource</th>
                   <th className="px-6 py-4">Project</th>
                   <th className="px-6 py-4">Utilisation</th>
                   <th className="px-6 py-4">From Date</th>
@@ -82,10 +81,7 @@ export default function AllocationsPage() {
                 {filteredAllocations.map((alloc) => (
                   <tr key={alloc._id} className="hover:bg-slate-850/40 transition-colors">
                     <td className="px-6 py-4 font-semibold text-slate-50">
-                      {alloc.employeeId?.fullName || 'Deactivated Resource'}
-                    </td>
-                    <td className="px-6 py-4 text-slate-400">
-                      {alloc.employeeId?.department || 'N/A'}
+                      {alloc.resourceId?.fullName || 'Deactivated Resource'}
                     </td>
                     <td className="px-6 py-4 text-emerald-400 font-medium">
                       {alloc.projectId?.name || 'Archived Project'}

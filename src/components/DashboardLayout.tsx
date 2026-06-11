@@ -25,7 +25,7 @@ import { Header } from "./dashboard/Header";
 const navLinks: Record<string, { href: string; label: string; icon: React.ElementType }[]> = {
   ADMIN: [
     { href: "/dashboard/admin", label: STRINGS.DASHBOARD.OVERVIEW, icon: LayoutDashboard },
-    { href: "/dashboard/admin/employees", label: STRINGS.DASHBOARD.ADMIN_OPTION_EMPLOYEES_LABEL, icon: Users },
+    { href: "/dashboard/admin/resources", label: STRINGS.DASHBOARD.ADMIN_OPTION_EMPLOYEES_LABEL, icon: Users },
     { href: "/dashboard/admin/projects", label: STRINGS.DASHBOARD.ADMIN_OPTION_PROJECTS_LABEL, icon: FolderKanban },
     { href: "/dashboard/admin/allocations", label: STRINGS.DASHBOARD.ADMIN_OPTION_ALLOCATIONS_LABEL, icon: Briefcase },
     { href: "/dashboard/admin/users", label: STRINGS.DASHBOARD.ADMIN_OPTION_USERS_LABEL, icon: UserCheck },

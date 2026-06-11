@@ -3,7 +3,7 @@ import WelcomePage from '@/pages/WelcomePage';
 import LoginPage from '@/pages/LoginPage';
 import ChangePasswordPage from '@/pages/ChangePasswordPage';
 import AdminDashboard from '@/pages/AdminDashboard';
-import EmployeesPage from '@/pages/EmployeesPage';
+import ResourcesPage from '@/pages/ResourcesPage';
 import ProjectsPage from '@/pages/ProjectsPage';
 import AllocationsPage from '@/pages/AllocationsPage';
 import UsersPage from '@/pages/UsersPage';
@@ -40,10 +40,10 @@ function App() {
             }
           />
           <Route
-            path="admin/employees"
+            path="admin/resources"
             element={
               <RoleGuard allowedRoles={['ADMIN']}>
-                <EmployeesPage />
+                <ResourcesPage />
               </RoleGuard>
             }
           />

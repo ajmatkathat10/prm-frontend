@@ -10,41 +10,39 @@ import {
   Check,
 } from 'lucide-react';
 import {
-  useGetEmployeesQuery,
-  useDeactivateEmployeeMutation,
-  useAddEmployeeSkillMutation,
-  useUpdateEmployeeSkillMutation,
-  useRemoveEmployeeSkillMutation,
+  useGetResourcesQuery,
+  useDeactivateResourceMutation,
+  useAddResourceSkillMutation,
+  useUpdateResourceSkillMutation,
+  useRemoveResourceSkillMutation,
   useAssignManagerMutation,
-} from '@/store/services/employeeApiSlice';
+} from '@/store/services/resourceApiSlice';
 import { useGetUsersQuery } from '@/store/services/userApiSlice';
 import { useAuth } from '@/hooks/useAuth';
-import type { Employee, Skill } from '@/types/employee';
+import type { Resource, Skill } from '@/types/resource';
 
-export default function EmployeesPage() {
+export default function ResourcesPage() {
   const [activeTab, setActiveTab] = useState<'list' | 'assign'>('list');
   const [statusFilter, setStatusFilter] = useState<string>('');
-  const [deptFilter, setDeptFilter] = useState<string>('');
   const { user: currentUser } = useAuth();
 
   // Queries & Mutations
-  const { data: employees = [], isLoading: isEmpLoading, refetch: refetchEmployees } = useGetEmployeesQuery({
+  const { data: resources = [], isLoading: isResLoading, refetch: refetchResources } = useGetResourcesQuery({
     status: statusFilter || undefined,
-    department: deptFilter || undefined,
   });
 
   const { data: users = [] } = useGetUsersQuery();
 
-  const [deactivateEmployee] = useDeactivateEmployeeMutation();
-  const [addSkill] = useAddEmployeeSkillMutation();
-  const [updateSkill] = useUpdateEmployeeSkillMutation();
-  const [removeSkill] = useRemoveEmployeeSkillMutation();
+  const [deactivateResource] = useDeactivateResourceMutation();
+  const [addSkill] = useAddResourceSkillMutation();
+  const [updateSkill] = useUpdateResourceSkillMutation();
+  const [removeSkill] = useRemoveResourceSkillMutation();
   const [assignManager] = useAssignManagerMutation();
 
   // Dialog State
-  const [selectedEmp, setSelectedEmp] = useState<Employee | null>(null);
+  const [selectedRes, setSelectedRes] = useState<Resource | null>(null);
   const [showSkillModal, setShowSkillModal] = useState(false);
-  const [showDeactivateModal, setShowDeactivateModal] = useState<Employee | null>(null);
+  const [showDeactivateModal, setShowDeactivateModal] = useState<Resource | null>(null);
 
   // Form State
   const [newSkillName, setNewSkillName] = useState('');
@@ -59,52 +57,52 @@ export default function EmployeesPage() {
   // Handlers
   const handleAddSkill = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedEmp || !newSkillName.trim()) return;
+    if (!selectedRes || !newSkillName.trim()) return;
 
     try {
       const updated = await addSkill({
-        employeeId: selectedEmp._id,
+        resourceId: selectedRes._id,
         name: newSkillName.trim(),
         category: newSkillCategory,
         proficiency: newSkillProficiency,
       }).unwrap();
       
-      setSelectedEmp(updated);
+      setSelectedRes(updated);
       setNewSkillName('');
-      refetchEmployees();
+      refetchResources();
     } catch {
       // Handled by toast middleware
     }
   };
 
   const handleUpdateSkill = async (skillId: string, prof: 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED') => {
-    if (!selectedEmp) return;
+    if (!selectedRes) return;
     try {
       const updated = await updateSkill({
-        employeeId: selectedEmp._id,
+        resourceId: selectedRes._id,
         skillId,
         proficiency: prof,
       }).unwrap();
       
-      setSelectedEmp(updated);
-      refetchEmployees();
+      setSelectedRes(updated);
+      refetchResources();
     } catch {
       // Handled by toast middleware
     }
   };
 
   const handleRemoveSkill = async (skillId: string) => {
-    if (!selectedEmp) return;
+    if (!selectedRes) return;
     if (!confirm('Are you sure you want to remove this skill?')) return;
 
     try {
       const updated = await removeSkill({
-        employeeId: selectedEmp._id,
+        resourceId: selectedRes._id,
         skillId,
       }).unwrap();
       
-      setSelectedEmp(updated);
-      refetchEmployees();
+      setSelectedRes(updated);
+      refetchResources();
     } catch {
       // Handled by toast middleware
     }
@@ -113,9 +111,9 @@ export default function EmployeesPage() {
   const handleDeactivate = async () => {
     if (!showDeactivateModal) return;
     try {
-      await deactivateEmployee(showDeactivateModal._id).unwrap();
+      await deactivateResource(showDeactivateModal._id).unwrap();
       setShowDeactivateModal(null);
-      refetchEmployees();
+      refetchResources();
     } catch {
       // Handled by toast middleware
     }
@@ -139,7 +137,7 @@ export default function EmployeesPage() {
       setAssignSuccess(true);
       setAssignEmpUserId('');
       setAssignMgrUserId('');
-      refetchEmployees();
+      refetchResources();
     } catch (err: unknown) {
       const errObj = err as { data?: { error?: string } };
       setAssignError(errObj?.data?.error || 'Failed to assign manager.');
@@ -150,14 +148,14 @@ export default function EmployeesPage() {
   const getManagerLabel = (managerId?: string | null) => {
     if (!managerId) return 'Unassigned';
     const mgr = users.find(u => u._id === managerId);
-    return mgr ? mgr.username : 'Unassigned';
+    return mgr ? (mgr.fullName || mgr.username) : 'Unassigned';
   };
 
   return (
     <div className="p-6 lg:p-8 space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-slate-50">Manage Employees</h1>
+        <h1 className="text-3xl font-bold text-slate-50">Manage Resources</h1>
       </div>
 
       {/* Tabs */}
@@ -170,7 +168,7 @@ export default function EmployeesPage() {
               : 'border-transparent text-slate-400 hover:text-slate-200'
           }`}
         >
-          View Employees
+          View Resources
         </button>
         <button
           onClick={() => setActiveTab('assign')}
@@ -205,34 +203,20 @@ export default function EmployeesPage() {
               <option value="ALLOCATED">Allocated</option>
               <option value="INACTIVE">Inactive</option>
             </select>
-
-            {/* Department */}
-            <select
-              value={deptFilter}
-              onChange={(e) => setDeptFilter(e.target.value)}
-              className="bg-slate-800 border border-slate-700 text-slate-200 text-sm rounded-lg px-3 py-2 outline-none focus:border-indigo-500"
-            >
-              <option value="">All Departments</option>
-              <option value="Engineering">Engineering</option>
-              <option value="Delivery">Delivery</option>
-              <option value="QA">QA</option>
-              <option value="DevOps">DevOps</option>
-            </select>
           </div>
 
           {/* Table */}
           <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
-            {isEmpLoading ? (
-              <div className="p-8 text-center text-slate-400">Loading employees...</div>
-            ) : employees.length === 0 ? (
-              <div className="p-8 text-center text-slate-400">No employees match filters.</div>
+            {isResLoading ? (
+              <div className="p-8 text-center text-slate-400">Loading resources...</div>
+            ) : resources.length === 0 ? (
+              <div className="p-8 text-center text-slate-400">No resources match filters.</div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="border-b border-slate-800 text-slate-400 text-xs font-semibold uppercase bg-slate-950">
                       <th className="px-6 py-4">Name</th>
-                      <th className="px-6 py-4">Department</th>
                       <th className="px-6 py-4">Designation</th>
                       <th className="px-6 py-4">Manager</th>
                       <th className="px-6 py-4">Status</th>
@@ -240,31 +224,30 @@ export default function EmployeesPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800/60 text-slate-200 text-sm">
-                    {employees.map((emp) => (
-                      <tr key={emp._id} className="hover:bg-slate-850/40 transition-colors">
-                        <td className="px-6 py-4 font-semibold text-slate-50">{emp.fullName}</td>
-                        <td className="px-6 py-4">{emp.department}</td>
-                        <td className="px-6 py-4 text-slate-400">{emp.designation}</td>
+                    {resources.map((res) => (
+                      <tr key={res._id} className="hover:bg-slate-850/40 transition-colors">
+                        <td className="px-6 py-4 font-semibold text-slate-50">{res.fullName}</td>
+                        <td className="px-6 py-4 text-slate-400">{res.designation}</td>
                         <td className="px-6 py-4 text-slate-400">
-                          {getManagerLabel(emp.managerId)}
+                          {getManagerLabel(res.managerId)}
                         </td>
                         <td className="px-6 py-4">
                           <span
                             className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${
-                              emp.status === 'ALLOCATED'
+                              res.status === 'ALLOCATED'
                                 ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                                : emp.status === 'BENCH'
+                                : res.status === 'BENCH'
                                 ? 'bg-amber-500/10 text-amber-400 border-amber-500/20'
                                 : 'bg-rose-500/10 text-rose-400 border-rose-500/20'
                             }`}
                           >
-                            {emp.status}
+                            {res.status}
                           </span>
                         </td>
                         <td className="px-6 py-4 text-right space-x-2">
                           <button
                             onClick={() => {
-                              setSelectedEmp(emp);
+                              setSelectedRes(res);
                               setShowSkillModal(true);
                             }}
                             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 hover:bg-slate-700 hover:text-slate-50 text-xs text-slate-300 font-medium transition-colors"
@@ -272,14 +255,14 @@ export default function EmployeesPage() {
                             <Edit className="w-3.5 h-3.5" />
                             Skills
                           </button>
-                          {emp.isActive && (
-                            emp.userId === currentUser?.id ? (
+                          {res.isActive && (
+                            res.userId === currentUser?.id ? (
                               <span className="inline-block text-xs font-semibold text-slate-500 px-3 py-1.5 select-none">
                                 Current User
                               </span>
                             ) : (
                               <button
-                                onClick={() => setShowDeactivateModal(emp)}
+                                onClick={() => setShowDeactivateModal(res)}
                                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-955/20 border border-rose-900/30 hover:bg-rose-900/40 hover:text-rose-205 text-xs text-rose-400 font-medium transition-colors"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
@@ -306,7 +289,7 @@ export default function EmployeesPage() {
             Assign Delivery Manager
           </h2>
           <p className="text-slate-400 text-sm mb-6">
-            Assign or update the manager associated with an employee. This controls team scoping for the Manager Resource Dashboard.
+            Assign or update the manager associated with a resource. This controls team scoping for the Manager Resource Dashboard.
           </p>
 
           <form onSubmit={handleAssignManager} className="space-y-5">
@@ -326,18 +309,18 @@ export default function EmployeesPage() {
 
             {/* Employee Dropdown */}
             <div className="space-y-2">
-              <label className="block text-sm font-semibold text-slate-300">Select Employee</label>
+              <label className="block text-sm font-semibold text-slate-300">Select Resource</label>
               <select
                 value={assignEmpUserId}
                 onChange={(e) => setAssignEmpUserId(e.target.value)}
                 className="w-full bg-slate-800 border border-slate-700 text-slate-100 rounded-lg px-4 py-2.5 outline-none focus:border-indigo-500"
               >
-                <option value="">-- Choose Employee --</option>
+                <option value="">-- Choose Resource --</option>
                 {users
                   .filter((u) => u.role === 'EMPLOYEE' && u.isActive)
                   .map((u) => (
                     <option key={u._id} value={u._id}>
-                      {u.username} ({u.email})
+                      {u.fullName || u.username} ({u.email})
                     </option>
                   ))}
               </select>
@@ -356,7 +339,7 @@ export default function EmployeesPage() {
                   .filter((u) => u.role === 'MANAGER' && u.isActive)
                   .map((u) => (
                     <option key={u._id} value={u._id}>
-                      {u.username} ({u.email})
+                      {u.fullName || u.username} ({u.email})
                     </option>
                   ))}
               </select>
@@ -373,19 +356,19 @@ export default function EmployeesPage() {
       )}
 
       {/* Skills Dialog Modal */}
-      {showSkillModal && selectedEmp && (
+      {showSkillModal && selectedRes && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl">
             {/* Modal Header */}
             <div className="px-6 py-4 bg-slate-950 border-b border-slate-800 flex justify-between items-center">
               <div>
-                <h3 className="text-lg font-bold text-slate-50">{selectedEmp.fullName}</h3>
+                <h3 className="text-lg font-bold text-slate-50">{selectedRes.fullName}</h3>
                 <p className="text-xs text-slate-400">Manage profile skill inventory</p>
               </div>
               <button
                 onClick={() => {
                   setShowSkillModal(false);
-                  setSelectedEmp(null);
+                  setSelectedRes(null);
                 }}
                 className="p-1 text-slate-400 hover:text-slate-200 transition-colors"
               >
@@ -398,11 +381,11 @@ export default function EmployeesPage() {
               {/* Current Skills list */}
               <div>
                 <h4 className="text-sm font-semibold text-slate-300 mb-3">Current Skills</h4>
-                {selectedEmp.skills.length === 0 ? (
+                {selectedRes.skills.length === 0 ? (
                   <p className="text-sm text-slate-500 italic">No skills listed on profile.</p>
                 ) : (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {selectedEmp.skills.map((s, idx) => {
+                    {selectedRes.skills.map((s, idx) => {
                       const skillObj = s.skillId as Skill;
                       const sName = typeof s.skillId === 'object' ? skillObj.name : 'Unknown Skill';
                       const sId = typeof s.skillId === 'object' ? skillObj._id : s.skillId;
@@ -511,7 +494,7 @@ export default function EmployeesPage() {
                 <ShieldAlert className="w-6 h-6 text-rose-400" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-slate-50">Deactivate Employee Profile?</h3>
+                <h3 className="text-lg font-bold text-slate-50">Deactivate Resource Profile?</h3>
                 <p className="text-slate-400 text-sm mt-1">
                   Are you sure you want to deactivate <strong>{showDeactivateModal.fullName}</strong>?
                 </p>
@@ -523,7 +506,7 @@ export default function EmployeesPage() {
                 <ShieldAlert className="w-3.5 h-3.5 text-rose-455" /> Warning
               </p>
               <p>
-                Deactivating this employee record will immediately:
+                Deactivating this resource record will immediately:
               </p>
               <ul className="list-disc pl-4 space-y-1">
                 <li>End all active overlapping allocations today.</li>

@@ -3,11 +3,11 @@ import type { Allocation, AllocationsResponse } from '@/types/allocation';
 
 export const allocationApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getAllAllocations: builder.query<Allocation[], { employeeId?: string; projectId?: string } | void>({
+    getAllAllocations: builder.query<Allocation[], { resourceId?: string; projectId?: string } | void>({
       query: (params) => {
         const queryParams = new URLSearchParams();
         if (params) {
-          if (params.employeeId) queryParams.append('employeeId', params.employeeId);
+          if (params.resourceId) queryParams.append('resourceId', params.resourceId);
           if (params.projectId) queryParams.append('projectId', params.projectId);
         }
         return `/allocations?${queryParams.toString()}`;

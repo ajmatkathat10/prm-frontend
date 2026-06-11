@@ -10,7 +10,7 @@ import { STRINGS } from "@/constants/strings";
 
 const adminOptions = [
   {
-    href: "/dashboard/admin/employees",
+    href: "/dashboard/admin/resources",
     label: STRINGS.DASHBOARD.ADMIN_OPTION_EMPLOYEES_LABEL,
     description: STRINGS.DASHBOARD.ADMIN_OPTION_EMPLOYEES_DESC,
     icon: Users,
