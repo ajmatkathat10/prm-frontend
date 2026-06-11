@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
+import type { Reducer, PayloadAction } from '@reduxjs/toolkit';
 
 export interface ToastMessage {
   id: string;
@@ -8,7 +8,7 @@ export interface ToastMessage {
   duration?: number;
 }
 
-interface ToastState {
+export interface ToastState {
   toasts: ToastMessage[];
 }
 
@@ -41,4 +41,4 @@ const toastSlice = createSlice({
 });
 
 export const { addToast, removeToast } = toastSlice.actions;
-export default toastSlice.reducer;
+export default toastSlice.reducer as Reducer<ToastState>;
