@@ -281,7 +281,7 @@ export default function UsersPage() {
             Provision New User Account
           </h2>
           <p className="text-slate-400 text-sm mb-6">
-            Input details to initialize a credential profile. Corresponding employee profiles are auto-linked for Employees and Managers.
+            Input details to initialize a credential profile. Corresponding employee profiles are auto-linked for Employees only. Managers and Admins are credential-only profiles.
           </p>
 
           <form onSubmit={handleCreateUser} className="space-y-4">
