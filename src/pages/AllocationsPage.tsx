@@ -7,7 +7,6 @@ export default function AllocationsPage() {
 
   const { data: allocations = [], isLoading } = useGetAllAllocationsQuery();
 
-  // Filter allocations locally for fast responsiveness
   const filteredAllocations = allocations.filter((alloc) => {
     const resourceName = alloc.resourceId?.fullName || '';
     const projectName = alloc.projectId?.name || '';
@@ -20,18 +19,15 @@ export default function AllocationsPage() {
 
   return (
     <div>
-      {/* Header */}
       <div>
         <h1>View All Allocations</h1>
       </div>
 
-      {/* Filter Options */}
       <div className="card" style={{ display: 'flex', gap: '15px', alignItems: 'center', flexWrap: 'wrap' }}>
         <div>
           <strong>Filters:</strong>
         </div>
 
-        {/* Employee Search Input */}
         <div>
           <label style={{ display: 'inline', marginRight: '5px' }}>Resource:</label>
           <input
@@ -42,7 +38,6 @@ export default function AllocationsPage() {
           />
         </div>
 
-        {/* Project Search Input */}
         <div>
           <label style={{ display: 'inline', marginRight: '5px' }}>Project:</label>
           <input
@@ -54,7 +49,6 @@ export default function AllocationsPage() {
         </div>
       </div>
 
-      {/* Matrix Table */}
       {isLoading ? (
         <div style={{ padding: "20px", color: "#666" }}>Loading allocations data...</div>
       ) : filteredAllocations.length === 0 ? (

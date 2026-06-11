@@ -20,9 +20,8 @@ const employeeOptions = [
 ];
 
 export default function EmployeeDashboard() {
-  // Mock reminder flag for week (BRD Screen 5 shows reminder if latest timesheet is missing)
   const showReminder = true;
-  const reminderWeek = "29-May-2026"; // Example date matching seeding/context timeframe
+  const reminderWeek = "29-May-2026";
 
   return (
     <div>
@@ -30,7 +29,6 @@ export default function EmployeeDashboard() {
         <h1>{STRINGS.DASHBOARD.MY_WORKSPACE}</h1>
       </div>
 
-      {/* V4 Timesheet Reminder Banner */}
       {showReminder && (
         <div style={{ border: "1px solid #cc8800", backgroundColor: "#fffbeb", padding: "10px", borderRadius: "4px", marginBottom: "15px" }}>
           <strong style={{ color: "#b45309" }}>{STRINGS.DASHBOARD.TIMESHEET_REMINDER}</strong>
@@ -40,7 +38,6 @@ export default function EmployeeDashboard() {
         </div>
       )}
 
-      {/* Grid of Employee Options */}
       <div style={{ display: "flex", flexDirection: "column", gap: "15px", marginTop: "15px" }}>
         {employeeOptions.map((option) => (
           <div key={option.label} className="card">

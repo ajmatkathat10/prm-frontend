@@ -2,11 +2,9 @@ import { useState } from 'react';
 import {
   Plus,
   Key,
-  ShieldAlert,
   Check,
   UserX,
   RefreshCw,
-  X,
   Copy,
   Eye,
   EyeOff,
@@ -261,12 +259,113 @@ export default function UsersPage() {
               </table>
             </div>
           )}
+
+          {/* Reset Password Panel */}
+          {selectedUserForReset && (
+            <div className="card" style={{ marginTop: '20px', border: '1px solid #999' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #ccc', paddingBottom: '10px', marginBottom: '15px' }}>
+                <div>
+                  <h3 style={{ margin: 0 }}>Reset Password: {selectedUserForReset.username}</h3>
+                  <p style={{ margin: '5px 0 0 0', fontSize: '12px', color: '#666' }}>Issue a new password token</p>
+                </div>
+                <button onClick={handleCloseResetModal} type="button">Close Panel</button>
+              </div>
+
+              <form onSubmit={handleResetPasswordSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                <div>
+                  <label>New Temporary Password</label>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <input
+                      type={showNewTempPass ? 'text' : 'password'}
+                      placeholder="At least 8 chars, 1 uppercase, 1 number"
+                      value={newTempPassword}
+                      onChange={(e) => setNewTempPassword(e.target.value)}
+                      style={{ flex: 1 }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowNewTempPass(!showNewTempPass)}
+                    >
+                      {showNewTempPass ? 'Hide' : 'Show'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleCopyNewTempPass}
+                      disabled={!newTempPassword}
+                    >
+                      {copiedNewTempPass ? 'Copied!' : 'Copy'}
+                    </button>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <button type="button" onClick={handleCloseResetModal}>Cancel</button>
+                  <button type="submit">Reset password</button>
+                </div>
+              </form>
+            </div>
+          )}
+
+          {/* Deactivate User confirmation panel */}
+          {selectedUserForDeactivate && (
+            <div className="card" style={{ marginTop: '20px', border: '1px solid #cc0000', backgroundColor: '#fff5f5' }}>
+              <h3 style={{ color: '#cc0000', margin: '0 0 10px 0' }}>Deactivate Login Credentials?</h3>
+              <p>
+                Block login capabilities for user <strong>{selectedUserForDeactivate.username}</strong>?
+              </p>
+
+              <div style={{ borderLeft: '3px solid #cc0000', paddingLeft: '10px', margin: '15px 0', fontSize: '13px', color: '#660000' }}>
+                <strong>Warning:</strong> This action will instantly:
+                <ul>
+                  <li>Block user authentication services (cannot log in).</li>
+                  <li>Deactivate their matching employee profile.</li>
+                  <li>Terminate all overlapping allocations today.</li>
+                </ul>
+              </div>
+
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button type="button" onClick={() => setSelectedUserForDeactivate(null)}>Cancel</button>
+                <button
+                  type="button"
+                  onClick={handleDeactivate}
+                  style={{ backgroundColor: '#cc0000', color: '#ffffff', borderColor: '#cc0000' }}
+                >
+                  Deactivate login
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Reactivate User confirmation panel */}
+          {selectedUserForReactivate && (
+            <div className="card" style={{ marginTop: '20px', border: '1px solid #007700', backgroundColor: '#f5fff5' }}>
+              <h3 style={{ color: '#007700', margin: '0 0 10px 0' }}>Reactivate Account?</h3>
+              <p>
+                Re-authorize access for user <strong>{selectedUserForReactivate.username}</strong>?
+              </p>
+
+              <p style={{ fontSize: '13px', color: '#333' }}>
+                <strong>Note:</strong> Previous allocations are NOT restored automatically. The resource profile status resets to BENCH. You will need to manually configure allocations if desired.
+              </p>
+
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button type="button" onClick={() => setSelectedUserForReactivate(null)}>Cancel</button>
+                <button
+                  type="button"
+                  onClick={handleReactivate}
+                  style={{ backgroundColor: '#007700', color: '#ffffff', borderColor: '#007700' }}
+                >
+                  Confirm reactivation
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
       {/* Provision Form tab */}
       {activeTab === 'create' && (
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 max-w-xl">
+        <div className="card max-w-xl" style={{ padding: '20px' }}>
           <h2 className="text-xl font-bold text-slate-100 mb-2 flex items-center gap-2">
             <Plus className="w-5 h-5 text-rose-400" />
             Provision New User Account
@@ -395,169 +494,6 @@ export default function UsersPage() {
               Provision Account
             </button>
           </form>
-        </div>
-      )}
-
-      {selectedUserForReset && (
-        <div className="modal-overlay">
-          <div className="modal-content" style={{ maxWidth: '450px' }}>
-            <div className="px-6 py-4 bg-slate-950 border-b border-slate-800 flex justify-between items-center">
-              <div>
-                <h3 className="text-lg font-bold text-slate-50">Reset Password: {selectedUserForReset.username}</h3>
-                <p className="text-xs text-slate-400">Issue a new password token</p>
-              </div>
-              <button
-                onClick={handleCloseResetModal}
-                className="p-1 text-slate-400 hover:text-slate-200 transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <form onSubmit={handleResetPasswordSubmit} className="p-6 space-y-4">
-              <div className="space-y-1">
-                <label className="block text-sm font-semibold text-slate-300">New Temporary Password</label>
-                <div className="relative">
-                  <input
-                    type={showNewTempPass ? 'text' : 'password'}
-                    placeholder="At least 8 chars, 1 uppercase, 1 number"
-                    value={newTempPassword}
-                    onChange={(e) => setNewTempPassword(e.target.value)}
-                    className="w-full bg-slate-800 border border-slate-700 text-slate-100 rounded-lg pl-4 pr-20 py-2 outline-none focus:border-rose-500"
-                  />
-                  <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
-                    <button
-                      type="button"
-                      onClick={() => setShowNewTempPass(!showNewTempPass)}
-                      className="p-1.5 text-slate-400 hover:text-slate-200 transition-colors"
-                      title={showNewTempPass ? 'Hide password' : 'Show password'}
-                    >
-                      {showNewTempPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={handleCopyNewTempPass}
-                      disabled={!newTempPassword}
-                      className={`p-1.5 transition-colors ${
-                        !newTempPassword
-                          ? 'text-slate-650 cursor-not-allowed'
-                          : 'text-slate-400 hover:text-slate-200'
-                      }`}
-                      title="Copy to clipboard"
-                    >
-                      {copiedNewTempPass ? (
-                        <Check className="w-4 h-4 text-emerald-450" />
-                      ) : (
-                        <Copy className="w-4 h-4" />
-                      )}
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex justify-end gap-3 mt-6">
-                <button
-                  type="button"
-                  onClick={handleCloseResetModal}
-                  className="px-4 py-2 text-sm text-slate-400 bg-slate-850 hover:bg-slate-800 rounded-lg"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 text-sm font-semibold bg-rose-600 hover:bg-rose-500 text-slate-50 rounded-lg transition-colors"
-                >
-                  Reset password
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* Deactivate User confirmation modal */}
-      {selectedUserForDeactivate && (
-        <div className="modal-overlay">
-          <div className="modal-content" style={{ maxWidth: '450px' }}>
-            <div className="flex gap-4">
-              <div className="w-12 h-12 rounded-full bg-rose-500/10 border border-rose-500/20 flex items-center justify-center shrink-0">
-                <ShieldAlert className="w-6 h-6 text-rose-455" />
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-slate-50">Deactivate Login Credentials?</h3>
-                <p className="text-slate-400 text-sm mt-1">
-                  Block login capabilities for user <strong>{selectedUserForDeactivate.username}</strong>?
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-rose-955/10 border border-rose-900/30 p-4 rounded-xl text-rose-300 text-xs leading-relaxed space-y-2">
-              <p className="font-bold flex items-center gap-1.5">
-                <ShieldAlert className="w-3.5 h-3.5 text-rose-400" /> Warning
-              </p>
-              <p>
-                This action will instantly:
-              </p>
-              <ul className="list-disc pl-4 space-y-1">
-                <li>Block user authentication services (cannot log in).</li>
-                <li>Deactivate their matching employee profile.</li>
-                <li>Terminate all overlapping allocations today.</li>
-              </ul>
-            </div>
-
-            <div className="flex justify-end gap-3">
-              <button
-                onClick={() => setSelectedUserForDeactivate(null)}
-                className="px-4 py-2 text-sm text-slate-400 hover:text-slate-200 transition-colors bg-slate-800 hover:bg-slate-700 rounded-lg"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleDeactivate}
-                className="px-4 py-2 text-sm font-semibold bg-rose-600 hover:bg-rose-500 text-slate-50 rounded-lg transition-colors"
-              >
-                Deactivate login
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Reactivate User confirmation modal */}
-      {selectedUserForReactivate && (
-        <div className="modal-overlay">
-          <div className="modal-content" style={{ maxWidth: '450px' }}>
-            <div className="flex gap-4">
-              <div className="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
-                <Check className="w-6 h-6 text-emerald-400" />
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-slate-50">Reactivate Account?</h3>
-                <p className="text-slate-400 text-sm mt-1">
-                  Re-authorize access for user <strong>{selectedUserForReactivate.username}</strong>?
-                </p>
-              </div>
-            </div>
-
-            <p className="text-slate-400 text-xs bg-slate-950 border border-slate-800 p-3 rounded-lg leading-relaxed">
-              <strong>Note:</strong> Previous allocations are NOT restored automatically. The resource profile status resets to BENCH. You will need to manually configure allocations if desired.
-            </p>
-
-            <div className="flex justify-end gap-3">
-              <button
-                onClick={() => setSelectedUserForReactivate(null)}
-                className="px-4 py-2 text-sm text-slate-400 hover:text-slate-200 transition-colors bg-slate-800 hover:bg-slate-700 rounded-lg"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleReactivate}
-                className="px-4 py-2 text-sm font-semibold bg-emerald-600 hover:bg-emerald-500 text-slate-50 rounded-lg transition-colors"
-              >
-                Confirm reactivation
-              </button>
-            </div>
-          </div>
         </div>
       )}
     </div>

@@ -14,13 +14,11 @@ import AuthLayout from '@/components/AuthLayout';
 import DashboardLayout from '@/components/DashboardLayout';
 import RoleGuard from '@/components/RoleGuard';
 import { Spinner } from '@/components/ui/Spinner';
-import ToastContainer from '@/components/ui/ToastContainer';
 
 function App() {
   return (
     <Router>
       <Spinner global />
-      <ToastContainer />
       <Routes>
         <Route path="/" element={<WelcomePage />} />
 

@@ -1,6 +1,6 @@
 export const COMMON_STRINGS = {
   APP_NAME: "PRM Tool",
-  APP_DESCRIPTION: "Project & Resource Management System powered by AI",
+  APP_DESCRIPTION: "Project & Resource Management System",
   BACK: "Back",
   SUBMIT: "Submit",
   CANCEL: "Cancel",

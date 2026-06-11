@@ -10,7 +10,6 @@ export const authErrorMiddleware: Middleware = (store) => (next) => (action: any
     const endpointName = action.meta?.arg?.endpointName;
     
     if (status === 401 && endpointName !== 'getCurrentUser') {
-      // Session has expired or user was deactivated - reset API cache to log them out
       store.dispatch(apiSlice.util.resetApiState());
     }
   }

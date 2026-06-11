@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import { apiSlice } from "@/store/apiSlice";
 import { Spinner } from "@/components/ui/Spinner";
 
-// Navigation links per role
 const navLinks: Record<string, { href: string; label: string }[]> = {
   ADMIN: [
     { href: "/dashboard/admin", label: STRINGS.DASHBOARD.OVERVIEW },
@@ -53,8 +52,8 @@ export default function DashboardLayout() {
   const handleLogout = async () => {
     try {
       await logout().unwrap();
-    } catch {
-      // Ignore logout errors
+    } catch (error) {
+      console.warn("Logout error occurred:", error);
     } finally {
       dispatch(apiSlice.util.resetApiState());
       navigate("/auth/login");

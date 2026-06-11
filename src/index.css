@@ -226,3 +226,34 @@ form {
   border-radius: 4px;
   margin-bottom: 15px;
 }
+
+/* Utilities for Layout and Forms */
+.w-full {
+  width: 100%;
+}
+
+.max-w-xl {
+  max-width: 576px;
+}
+
+.max-w-md {
+  max-width: 448px;
+}
+
+.space-y-4 > * + * {
+  margin-top: 16px;
+}
+
+.space-y-1 > * + * {
+  margin-top: 4px;
+}
+
+.grid {
+  display: grid;
+}
+
+@media (min-width: 640px) {
+  .sm\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
