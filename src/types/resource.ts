@@ -4,33 +4,32 @@ export interface Skill {
   category: 'BACKEND' | 'FRONTEND' | 'DEVOPS' | 'QA' | 'OTHER';
 }
 
-export interface EmployeeSkill {
+export interface ResourceSkill {
   skillId: Skill | string;
   proficiency: 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED';
   addedAt?: string;
 }
 
-export interface Employee {
+export interface Resource {
   _id: string;
   userId: string;
   managerId?: string | null;
   fullName: string;
   email: string;
-  department: string;
   designation: string;
   status: 'BENCH' | 'ALLOCATED' | 'INACTIVE';
   isActive: boolean;
-  skills: EmployeeSkill[];
+  skills: ResourceSkill[];
   createdAt?: string;
   updatedAt?: string;
 }
 
-export interface EmployeesResponse {
+export interface ResourcesResponse {
   success: boolean;
-  employees: Employee[];
+  resources: Resource[];
 }
 
-export interface EmployeeResponse {
+export interface ResourceResponse {
   success: boolean;
-  employee: Employee;
+  resource: Resource;
 }

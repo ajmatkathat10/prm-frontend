@@ -3,7 +3,6 @@ import {
   Plus,
   Edit2,
   Calendar,
-  X,
   PlusCircle,
   Activity,
 } from 'lucide-react';
@@ -206,24 +205,16 @@ export default function ProjectsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-slate-800">
+      <div className="tabs">
         <button
           onClick={() => setActiveTab('list')}
-          className={`px-5 py-3 font-semibold text-sm transition-colors border-b-2 -mb-[2px] ${
-            activeTab === 'list'
-              ? 'border-amber-500 text-amber-400'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
-          }`}
+          className={`tab-btn ${activeTab === 'list' ? 'active' : ''}`}
         >
           View & Manage Projects
         </button>
         <button
           onClick={() => setActiveTab('create')}
-          className={`px-5 py-3 font-semibold text-sm transition-colors border-b-2 -mb-[2px] ${
-            activeTab === 'create'
-              ? 'border-amber-500 text-amber-400'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
-          }`}
+          className={`tab-btn ${activeTab === 'create' ? 'active' : ''}`}
         >
           Create Project
         </button>
@@ -231,7 +222,8 @@ export default function ProjectsPage() {
 
       {/* View/List Tab */}
       {activeTab === 'list' && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Projects List Panel */}
           <div className="lg:col-span-2 space-y-4">
             <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
@@ -423,7 +415,70 @@ export default function ProjectsPage() {
             )}
           </div>
         </div>
-      )}
+
+        {editProj && (
+          <div className="card" style={{ marginTop: '20px', border: '1px solid #999' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #ccc', paddingBottom: '10px', marginBottom: '15px' }}>
+              <div>
+                <h3 style={{ margin: 0 }}>Update Project: {editProj.name}</h3>
+                <p style={{ margin: '5px 0 0 0', fontSize: '12px', color: '#666' }}>Modify key deliverables and assignments</p>
+              </div>
+              <button onClick={() => setEditProj(null)} type="button">Close Panel</button>
+            </div>
+            <form onSubmit={handleUpdateProject} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+              <div>
+                <label>Project Name</label>
+                <input type="text" value={editName} onChange={(e) => setEditName(e.target.value)} style={{ width: '100%' }} />
+              </div>
+              <div>
+                <label>Description</label>
+                <textarea value={editDesc} onChange={(e) => setEditDesc(e.target.value)} rows={2} style={{ width: '100%', resize: 'none' }} />
+              </div>
+              <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
+                <div style={{ flex: 1, minWidth: '140px' }}>
+                  <label>Start Date</label>
+                  <input type="date" value={editStart} onChange={(e) => setEditStart(e.target.value)} style={{ width: '100%' }} />
+                </div>
+                <div style={{ flex: 1, minWidth: '140px' }}>
+                  <label>End Date</label>
+                  <input type="date" value={editEnd} onChange={(e) => setEditEnd(e.target.value)} style={{ width: '100%' }} />
+                </div>
+              </div>
+              <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
+                <div style={{ flex: 1, minWidth: '120px' }}>
+                  <label>Status</label>
+                  <select value={editStatus} onChange={(e) => setEditStatus(e.target.value as 'PLANNED' | 'ACTIVE' | 'ON_HOLD' | 'COMPLETED')} style={{ width: '100%' }}>
+                    <option value="PLANNED">Planned</option>
+                    <option value="ACTIVE">Active</option>
+                    <option value="ON_HOLD">On Hold</option>
+                    <option value="COMPLETED">Completed</option>
+                  </select>
+                </div>
+                <div style={{ flex: 1, minWidth: '150px' }}>
+                  <label>Manager</label>
+                  <select value={editMgrId} onChange={(e) => setEditMgrId(e.target.value)} style={{ width: '100%' }}>
+                    <option value="">-- Choose Manager --</option>
+                    {managers.map((m) => (
+                      <option key={m._id} value={m._id}>
+                        {m.username}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div style={{ flex: 1, minWidth: '100px' }}>
+                  <label>Total SP</label>
+                  <input type="number" value={editSP} onChange={(e) => setEditSP(Number(e.target.value))} style={{ width: '100%' }} />
+                </div>
+              </div>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button type="button" onClick={() => setEditProj(null)}>Cancel</button>
+                <button type="submit">Save Changes</button>
+              </div>
+            </form>
+          </div>
+        )}
+      </>
+    )}
 
       {/* Create Tab */}
       {activeTab === 'create' && (
@@ -538,128 +593,6 @@ export default function ProjectsPage() {
         </div>
       )}
 
-      {/* Edit Details Dialog Modal */}
-      {editProj && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-xl overflow-hidden shadow-2xl">
-            {/* Modal Header */}
-            <div className="px-6 py-4 bg-slate-950 border-b border-slate-800 flex justify-between items-center">
-              <div>
-                <h3 className="text-lg font-bold text-slate-50">Update Project: {editProj.name}</h3>
-                <p className="text-xs text-slate-400">Modify key deliverables and assignments</p>
-              </div>
-              <button
-                onClick={() => setEditProj(null)}
-                className="p-1 text-slate-400 hover:text-slate-200 transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Modal Content */}
-            <form onSubmit={handleUpdateProject} className="p-6 space-y-4">
-              <div className="space-y-1">
-                <label className="block text-sm font-semibold text-slate-300">Project Name</label>
-                <input
-                  type="text"
-                  value={editName}
-                  onChange={(e) => setEditName(e.target.value)}
-                  className="w-full bg-slate-800 border border-slate-700 text-slate-100 rounded-lg px-4 py-2 outline-none focus:border-amber-500"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="block text-sm font-semibold text-slate-300">Description</label>
-                <textarea
-                  value={editDesc}
-                  onChange={(e) => setEditDesc(e.target.value)}
-                  rows={2}
-                  className="w-full bg-slate-800 border border-slate-700 text-slate-100 rounded-lg px-4 py-2 outline-none focus:border-amber-500 resize-none"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="block text-sm font-semibold text-slate-300">Start Date</label>
-                  <input
-                    type="date"
-                    value={editStart}
-                    onChange={(e) => setEditStart(e.target.value)}
-                    className="w-full bg-slate-800 border border-slate-700 text-slate-100 rounded-lg px-4 py-2 outline-none"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="block text-sm font-semibold text-slate-300">End Date</label>
-                  <input
-                    type="date"
-                    value={editEnd}
-                    onChange={(e) => setEditEnd(e.target.value)}
-                    className="w-full bg-slate-800 border border-slate-700 text-slate-100 rounded-lg px-4 py-2 outline-none"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-3 gap-4">
-                <div className="space-y-1">
-                  <label className="block text-sm font-semibold text-slate-300">Status</label>
-                  <select
-                    value={editStatus}
-                    onChange={(e) => setEditStatus(e.target.value as 'PLANNED' | 'ACTIVE' | 'ON_HOLD' | 'COMPLETED')}
-                    className="w-full bg-slate-800 border border-slate-700 text-slate-100 rounded-lg px-4 py-2 outline-none"
-                  >
-                    <option value="PLANNED">Planned</option>
-                    <option value="ACTIVE">Active</option>
-                    <option value="ON_HOLD">On Hold</option>
-                    <option value="COMPLETED">Completed</option>
-                  </select>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="block text-sm font-semibold text-slate-300">Manager</label>
-                  <select
-                    value={editMgrId}
-                    onChange={(e) => setEditMgrId(e.target.value)}
-                    className="w-full bg-slate-800 border border-slate-700 text-slate-100 rounded-lg px-4 py-2 outline-none"
-                  >
-                    <option value="">-- Choose Manager --</option>
-                    {managers.map((m) => (
-                      <option key={m._id} value={m._id}>
-                        {m.username}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="block text-sm font-semibold text-slate-300">Total SP</label>
-                  <input
-                    type="number"
-                    value={editSP}
-                    onChange={(e) => setEditSP(Number(e.target.value))}
-                    className="w-full bg-slate-800 border border-slate-700 text-slate-100 rounded-lg px-4 py-2 outline-none"
-                  />
-                </div>
-              </div>
-
-              <div className="flex justify-end gap-3 mt-6">
-                <button
-                  type="button"
-                  onClick={() => setEditProj(null)}
-                  className="px-4 py-2 text-sm text-slate-400 bg-slate-850 hover:bg-slate-800 rounded-lg"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 text-sm font-semibold bg-amber-600 hover:bg-amber-500 text-slate-50 rounded-lg transition-colors"
-                >
-                  Save changes
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

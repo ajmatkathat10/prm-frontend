@@ -1,9 +1,8 @@
 export interface Allocation {
   _id: string;
-  employeeId: {
+  resourceId: {
     _id: string;
     fullName: string;
-    department: string;
   };
   projectId: {
     _id: string;

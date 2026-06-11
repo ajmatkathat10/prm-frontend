@@ -3,7 +3,7 @@ import WelcomePage from '@/pages/WelcomePage';
 import LoginPage from '@/pages/LoginPage';
 import ChangePasswordPage from '@/pages/ChangePasswordPage';
 import AdminDashboard from '@/pages/AdminDashboard';
-import EmployeesPage from '@/pages/EmployeesPage';
+import ResourcesPage from '@/pages/ResourcesPage';
 import ProjectsPage from '@/pages/ProjectsPage';
 import AllocationsPage from '@/pages/AllocationsPage';
 import UsersPage from '@/pages/UsersPage';
@@ -14,13 +14,11 @@ import AuthLayout from '@/components/AuthLayout';
 import DashboardLayout from '@/components/DashboardLayout';
 import RoleGuard from '@/components/RoleGuard';
 import { Spinner } from '@/components/ui/Spinner';
-import ToastContainer from '@/components/ui/ToastContainer';
 
 function App() {
   return (
     <Router>
       <Spinner global />
-      <ToastContainer />
       <Routes>
         <Route path="/" element={<WelcomePage />} />
 
@@ -40,12 +38,16 @@ function App() {
             }
           />
           <Route
-            path="admin/employees"
+            path="admin/resources"
             element={
               <RoleGuard allowedRoles={['ADMIN']}>
-                <EmployeesPage />
+                <ResourcesPage />
               </RoleGuard>
             }
+          />
+          <Route
+            path="admin/employees"
+            element={<Navigate to="/dashboard/admin/resources" replace />}
           />
           <Route
             path="admin/projects"

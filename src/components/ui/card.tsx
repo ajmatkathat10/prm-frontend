@@ -1,14 +1,10 @@
 import * as React from "react"
-import { cn } from "@/lib/utils"
 
 const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn(
-        "rounded-xl border border-slate-800 bg-slate-900/50 backdrop-blur-md text-slate-100 shadow-xl",
-        className
-      )}
+      className={`card ${className || ""}`}
       {...props}
     />
   )
@@ -19,7 +15,8 @@ const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn("flex flex-col space-y-1.5 p-6", className)}
+      style={{ marginBottom: "10px" }}
+      className={className}
       {...props}
     />
   )
@@ -30,7 +27,8 @@ const CardTitle = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HT
   ({ className, ...props }, ref) => (
     <h3
       ref={ref}
-      className={cn("text-2xl font-semibold leading-none tracking-tight", className)}
+      style={{ margin: 0, fontSize: "1.25rem" }}
+      className={className}
       {...props}
     />
   )
@@ -41,7 +39,8 @@ const CardDescription = React.forwardRef<HTMLParagraphElement, React.HTMLAttribu
   ({ className, ...props }, ref) => (
     <p
       ref={ref}
-      className={cn("text-sm text-slate-400", className)}
+      style={{ color: "#666666", fontSize: "0.875rem", margin: "5px 0 0 0" }}
+      className={className}
       {...props}
     />
   )
@@ -50,7 +49,7 @@ CardDescription.displayName = "CardDescription"
 
 const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+    <div ref={ref} className={className} {...props} />
   )
 )
 CardContent.displayName = "CardContent"
@@ -59,7 +58,8 @@ const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn("flex items-center p-6 pt-0", className)}
+      style={{ marginTop: "10px", display: "flex", gap: "10px" }}
+      className={className}
       {...props}
     />
   )

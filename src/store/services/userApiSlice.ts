@@ -8,14 +8,14 @@ export const userApiSlice = apiSlice.injectEndpoints({
       transformResponse: (response: UsersResponse) => response.users,
       providesTags: ['User'],
     }),
-    createUser: builder.mutation<AdminUser, Partial<AdminUser> & { password?: string; fullName?: string }>({
+    createUser: builder.mutation<AdminUser, Partial<AdminUser> & { password?: string; designation?: string }>({
       query: (body) => ({
         url: '/users',
         method: 'POST',
         body,
       }),
       transformResponse: (response: UserResponse) => response.user,
-      invalidatesTags: ['User', 'Employee'],
+      invalidatesTags: ['User', 'Resource'],
     }),
     reactivateUser: builder.mutation<AdminUser, string>({
       query: (id) => ({
@@ -23,7 +23,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
       }),
       transformResponse: (response: UserResponse) => response.user,
-      invalidatesTags: ['User', 'Employee'],
+      invalidatesTags: ['User', 'Resource'],
     }),
     deactivateUser: builder.mutation<AdminUser, string>({
       query: (id) => ({
@@ -31,7 +31,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
       }),
       transformResponse: (response: UserResponse) => response.user,
-      invalidatesTags: ['User', 'Employee', 'Allocation'],
+      invalidatesTags: ['User', 'Resource', 'Allocation'],
     }),
     resetPassword: builder.mutation<AdminUser, { userId: string; newPassword?: string }>({
       query: ({ userId, ...body }) => ({
