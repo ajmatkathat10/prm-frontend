@@ -48,42 +48,85 @@ Resources can only be assigned to a specific set of roles/designations. The foll
 ### Class Diagram (Mermaid)
 ```mermaid
 classDiagram
-  %% Repository layer
+  %% Data Access Interfaces (SOLID ISP & DIP)
+  class IReadRepository~T~ {
+    <<interface>>
+    +findById(id: string) Promise~T | null~
+    +findOne(filter: Object) Promise~T | null~
+    +findAll(filter: Object) Promise~T[]~
+  }
+
+  class IWriteRepository~T~ {
+    <<interface>>
+    +create(data: Object) Promise~T~
+    +updateById(id: string, data: Object) Promise~T | null~
+    +deleteById(id: string) Promise~Boolean~
+  }
+
+  class IRepository~T~ {
+    <<interface>>
+  }
+  IReadRepository~T~ <|-- IRepository~T~
+  IWriteRepository~T~ <|-- IRepository~T~
+
+  %% Base repository class
   class BaseRepository~T~ {
+    <<abstract>>
     #model: Model
     +create(data: Object) Promise~T~
-    +findById(id: string) Promise~T~
-    +findOne(filter: Object) Promise~T~
+    +findById(id: string) Promise~T | null~
+    +findOne(filter: Object) Promise~T | null~
     +findAll(filter: Object) Promise~T[]~
-    +updateById(id: string, data: Object) Promise~T~
+    +updateById(id: string, data: Object) Promise~T | null~
+    +deleteById(id: string) Promise~Boolean~
   }
+  IRepository~T~ <|.. BaseRepository~T~
 
+  %% Concrete Repositories
   class UserRepository {
-    +findByUsernameOrEmail(identifier: string) Promise~User~
-    +deactivate(userId: string) Promise~User~
-    +reactivate(userId: string) Promise~User~
+    +findByUsernameOrEmail(identifier: string) Promise~User | null~
+    +deactivate(userId: string) Promise~User | null~
+    +reactivate(userId: string) Promise~User | null~
   }
+  BaseRepository~User~ <|-- UserRepository
 
   class ResourceRepository {
-    +findByUserId(userId: string) Promise~Resource~
+    +findByUserId(userId: string) Promise~Resource | null~
   }
+  BaseRepository~Resource~ <|-- ResourceRepository
 
   class AllocationRepository {
     +findActiveAllocationsForResource(resourceId: string) Promise~Allocation[]~
     +findOverlappingAllocations(resourceId: string, from: Date, to: Date) Promise~Allocation[]~
     +findAllWithDetails(filter: Object) Promise~Allocation[]~
   }
+  BaseRepository~Allocation~ <|-- AllocationRepository
 
-  class TimesheetRepository {
-    +findByResourceAndWeek(resourceId: string, weekStart: Date) Promise~Timesheet~
+  class ProjectRepository {
+    +findAllWithManager() Promise~Project[]~
+    +findByIdWithManager(id: string) Promise~Project | null~
+  }
+  BaseRepository~Project~ <|-- ProjectRepository
+
+  class SkillRepository {
+    +findByName(name: string) Promise~Skill | null~
+  }
+  BaseRepository~Skill~ <|-- SkillRepository
+
+  class SystemConfigRepository {
+    +getConfig() Promise~SystemConfig | null~
+  }
+  BaseRepository~SystemConfig~ <|-- SystemConfigRepository
+
+  %% Business Services
+  class AuthService {
+    -userRepo: IRepository~User~
+    +login(identifier: string, password: string) Promise~TokenPayload~
+    +changePassword(userId: string, newPassword: string) Promise~TokenPayload~
+    +issueSessionCookie(res: Response, payload: TokenPayload) void
+    +clearSessionCookie(res: Response) void
   }
 
-  BaseRepository~User~ <|-- UserRepository
-  BaseRepository~Resource~ <|-- ResourceRepository
-  BaseRepository~Allocation~ <|-- AllocationRepository
-  BaseRepository~Timesheet~ <|-- TimesheetRepository
-
-  %% Service layer
   class UserService {
     -userRepo: UserRepository
     -resourceRepo: ResourceRepository
@@ -101,7 +144,7 @@ classDiagram
     -skillRepo: SkillRepository
     -allocationRepo: AllocationRepository
     +getAllResources(filters: Object) Promise~Resource[]~
-    +getResourceById(id: string) Promise~Resource~
+    +getResourceById(id: string) Promise~Resource | null~
     +deactivateResource(resourceId: string, requestingUserId: string) Promise~Resource~
     +addResourceSkill(resourceId: string, name: string, category: string, proficiency: string) Promise~Resource~
     +updateResourceSkill(resourceId: string, skillId: string, proficiency: string) Promise~Resource~
@@ -109,14 +152,43 @@ classDiagram
     +assignManager(resourceUserId: string, managerUserId: string) Promise~Resource~
   }
 
+  class ProjectService {
+    -projectRepo: ProjectRepository
+    -userRepo: UserRepository
+    +createProject(data: Object) Promise~Project~
+    +getAllProjects() Promise~Project[]~
+    +getProjectById(projectId: string) Promise~Project | null~
+    +updateProject(projectId: string, data: Object) Promise~Project~
+    +addMilestone(projectId: string, title: string, dueDate: Date, storyPoints: number) Promise~Project~
+    +updateMilestoneStatus(projectId: string, milestoneId: string, status: string) Promise~Project~
+  }
+
+  class AllocationService {
+    -allocationRepo: AllocationRepository
+    +getAllAllocations(filters: Object) Promise~Allocation[]~
+  }
+
+  class SystemConfigService {
+    -systemConfigRepo: SystemConfigRepository
+    +getConfig() Promise~SystemConfig~
+    +updateConfig(data: Object) Promise~SystemConfig~
+  }
+
+  %% Dependencies (DIP)
+  AuthService --> IRepository : depends
   UserService --> UserRepository : depends
   UserService --> ResourceRepository : depends
   UserService --> AllocationRepository : depends
-
   ResourceService --> ResourceRepository : depends
   ResourceService --> UserRepository : depends
+  ResourceService --> SkillRepository : depends
   ResourceService --> AllocationRepository : depends
+  ProjectService --> ProjectRepository : depends
+  ProjectService --> UserRepository : depends
+  AllocationService --> AllocationRepository : depends
+  SystemConfigService --> SystemConfigRepository : depends
 ```
+
 
 ### Entity Relationship Diagram (Mermaid)
 ```mermaid

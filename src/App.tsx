@@ -48,6 +48,10 @@ function App() {
             }
           />
           <Route
+            path="admin/employees"
+            element={<Navigate to="/dashboard/admin/resources" replace />}
+          />
+          <Route
             path="admin/projects"
             element={
               <RoleGuard allowedRoles={['ADMIN']}>

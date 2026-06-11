@@ -159,24 +159,16 @@ export default function ResourcesPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-slate-800">
+      <div className="tabs">
         <button
           onClick={() => setActiveTab('list')}
-          className={`px-5 py-3 font-semibold text-sm transition-colors border-b-2 -mb-[2px] ${
-            activeTab === 'list'
-              ? 'border-indigo-500 text-indigo-400'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
-          }`}
+          className={`tab-btn ${activeTab === 'list' ? 'active' : ''}`}
         >
           View Resources
         </button>
         <button
           onClick={() => setActiveTab('assign')}
-          className={`px-5 py-3 font-semibold text-sm transition-colors border-b-2 -mb-[2px] ${
-            activeTab === 'assign'
-              ? 'border-indigo-500 text-indigo-400'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
-          }`}
+          className={`tab-btn ${activeTab === 'assign' ? 'active' : ''}`}
         >
           Assign Manager
         </button>
@@ -233,13 +225,13 @@ export default function ResourcesPage() {
                         </td>
                         <td className="px-6 py-4">
                           <span
-                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${
+                            className={
                               res.status === 'ALLOCATED'
-                                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                                ? 'status-allocated'
                                 : res.status === 'BENCH'
-                                ? 'bg-amber-500/10 text-amber-400 border-amber-500/20'
-                                : 'bg-rose-500/10 text-rose-400 border-rose-500/20'
-                            }`}
+                                ? 'status-bench'
+                                : 'status-inactive'
+                            }
                           >
                             {res.status}
                           </span>
@@ -355,10 +347,9 @@ export default function ResourcesPage() {
         </div>
       )}
 
-      {/* Skills Dialog Modal */}
       {showSkillModal && selectedRes && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl">
+        <div className="modal-overlay">
+          <div className="modal-content" style={{ maxWidth: '600px' }}>
             {/* Modal Header */}
             <div className="px-6 py-4 bg-slate-950 border-b border-slate-800 flex justify-between items-center">
               <div>
@@ -485,10 +476,9 @@ export default function ResourcesPage() {
         </div>
       )}
 
-      {/* Deactivate confirmation Warning Modal */}
       {showDeactivateModal && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-850 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl p-6 space-y-6">
+        <div className="modal-overlay">
+          <div className="modal-content" style={{ maxWidth: '450px' }}>
             <div className="flex gap-4">
               <div className="w-12 h-12 rounded-full bg-rose-500/10 border border-rose-500/20 flex items-center justify-center shrink-0">
                 <ShieldAlert className="w-6 h-6 text-rose-400" />

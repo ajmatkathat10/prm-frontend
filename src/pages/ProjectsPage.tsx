@@ -206,24 +206,16 @@ export default function ProjectsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-slate-800">
+      <div className="tabs">
         <button
           onClick={() => setActiveTab('list')}
-          className={`px-5 py-3 font-semibold text-sm transition-colors border-b-2 -mb-[2px] ${
-            activeTab === 'list'
-              ? 'border-amber-500 text-amber-400'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
-          }`}
+          className={`tab-btn ${activeTab === 'list' ? 'active' : ''}`}
         >
           View & Manage Projects
         </button>
         <button
           onClick={() => setActiveTab('create')}
-          className={`px-5 py-3 font-semibold text-sm transition-colors border-b-2 -mb-[2px] ${
-            activeTab === 'create'
-              ? 'border-amber-500 text-amber-400'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
-          }`}
+          className={`tab-btn ${activeTab === 'create' ? 'active' : ''}`}
         >
           Create Project
         </button>
@@ -538,10 +530,9 @@ export default function ProjectsPage() {
         </div>
       )}
 
-      {/* Edit Details Dialog Modal */}
       {editProj && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-xl overflow-hidden shadow-2xl">
+        <div className="modal-overlay">
+          <div className="modal-content" style={{ maxWidth: '600px' }}>
             {/* Modal Header */}
             <div className="px-6 py-4 bg-slate-950 border-b border-slate-800 flex justify-between items-center">
               <div>

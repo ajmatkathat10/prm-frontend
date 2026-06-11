@@ -1,189 +1,228 @@
-@import "tailwindcss";
-
-:root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
-}
-
-@theme inline {
-  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-
-  /* Redefine all slate variables to force light mode */
-  --color-slate-955: #f8fafc;
-  --color-slate-950: #f8fafc;
-  --color-slate-900: #ffffff;
-  --color-slate-850: #f1f5f9;
-  --color-slate-800: #e2e8f0;
-  --color-slate-750: #cbd5e1;
-  --color-slate-700: #cbd5e1;
-  --color-slate-600: #94a3b8;
-  --color-slate-500: #64748b;
-  --color-slate-400: #475569;
-  --color-slate-300: #334155;
-  --color-slate-200: #1e293b;
-  --color-slate-100: #0f172a;
-  --color-slate-50: #0f172a;
-
-  /* Redefine all indigo variables to grayscale (primary branding/actions) */
-  --color-indigo-50: #f8fafc;
-  --color-indigo-100: #f1f5f9;
-  --color-indigo-200: #e2e8f0;
-  --color-indigo-300: #cbd5e1;
-  --color-indigo-400: #475569;
-  --color-indigo-455: #475569;
-  --color-indigo-500: #0f172a; /* primary buttons */
-  --color-indigo-600: #000000; /* hover button states */
-  --color-indigo-700: #000000;
-  --color-indigo-800: #000000;
-  --color-indigo-850: #f1f5f9;
-  --color-indigo-900: #f1f5f9; /* active page background */
-  --color-indigo-955: #f8fafc;
-  --color-indigo-950: #f8fafc;
-
-  /* Redefine all rose variables to grayscale (destructive/critical/admin) */
-  --color-rose-50: #f8fafc;
-  --color-rose-100: #f1f5f9;
-  --color-rose-200: #e2e8f0;
-  --color-rose-300: #475569;
-  --color-rose-455: #475569;
-  --color-rose-400: #475569;
-  --color-rose-500: #0f172a;
-  --color-rose-600: #e2e8f0;
-  --color-rose-700: #cbd5e1;
-  --color-rose-800: #94a3b8;
-  --color-rose-900: #f1f5f9;
-  --color-rose-955: #f8fafc;
-  --color-rose-950: #f8fafc;
-
-  /* Redefine all emerald variables to grayscale (success/allocations) */
-  --color-emerald-50: #f8fafc;
-  --color-emerald-100: #f1f5f9;
-  --color-emerald-200: #e2e8f0;
-  --color-emerald-300: #475569;
-  --color-emerald-455: #475569;
-  --color-emerald-400: #475569;
-  --color-emerald-500: #0f172a;
-  --color-emerald-600: #e2e8f0;
-  --color-emerald-700: #cbd5e1;
-  --color-emerald-800: #94a3b8;
-  --color-emerald-900: #f1f5f9;
-  --color-emerald-955: #f8fafc;
-  --color-emerald-950: #f8fafc;
-
-  /* Redefine all amber variables to grayscale (warning/pending) */
-  --color-amber-50: #f8fafc;
-  --color-amber-100: #f1f5f9;
-  --color-amber-200: #e2e8f0;
-  --color-amber-300: #475569;
-  --color-amber-455: #475569;
-  --color-amber-400: #475569;
-  --color-amber-500: #0f172a;
-  --color-amber-600: #e2e8f0;
-  --color-amber-700: #cbd5e1;
-  --color-amber-800: #94a3b8;
-  --color-amber-900: #f1f5f9;
-  --color-amber-955: #f8fafc;
-  --color-amber-950: #f8fafc;
-
-  /* Redefine all red variables to grayscale */
-  --color-red-50: #f8fafc;
-  --color-red-100: #f1f5f9;
-  --color-red-200: #e2e8f0;
-  --color-red-300: #0f172a;
-  --color-red-400: #475569;
-  --color-red-450: #475569;
-  --color-red-500: #0f172a;
-  --color-red-600: #e2e8f0;
-  --color-red-700: #cbd5e1;
-  --color-red-800: #cbd5e1;
-  --color-red-900: #f1f5f9;
-  --color-red-950: #f8fafc;
-
-  /* Redefine all green variables to grayscale */
-  --color-green-50: #f8fafc;
-  --color-green-100: #f1f5f9;
-  --color-green-200: #e2e8f0;
-  --color-green-300: #475569;
-  --color-green-400: #475569;
-  --color-green-455: #475569;
-  --color-green-500: #0f172a;
-  --color-green-600: #e2e8f0;
-  --color-green-700: #cbd5e1;
-  --color-green-800: #94a3b8;
-  --color-green-900: #f1f5f9;
-  --color-green-950: #f8fafc;
-}
+/* Basic HTML Stylesheet for Downgraded UI */
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #ffffff;
+  color: #111111;
+  margin: 20px;
+  line-height: 1.5;
+}
+
+h1, h2, h3, h4 {
+  color: #111111;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+a {
+  color: #0066cc;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a:hover {
+  color: #0044aa;
+  text-decoration: none;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  margin-bottom: 20px;
+}
+
+th, td {
+  border: 1px solid #cccccc;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+tr:hover {
+  background-color: #fafafa;
+}
+
+button, input[type="submit"], input[type="button"] {
+  background-color: #f0f0f0;
+  border: 1px solid #999999;
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover, input[type="submit"]:hover, input[type="button"]:hover {
+  background-color: #e0e0e0;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="number"],
+select,
+textarea {
+  border: 1px solid #cccccc;
+  padding: 6px;
+  font-size: 14px;
+  border-radius: 4px;
+  background-color: #ffffff;
+  color: #111111;
   box-sizing: border-box;
 }
 
-/* Force-removal of glowing shadow effects, custom backgrounds and transitions to simplify UI */
-* {
-  text-shadow: none !important;
-  box-shadow: none !important;
-  transition: none !important;
-  backdrop-filter: none !important;
-}
-
-/* Standard thin border for clean input fields and card boundaries */
-input, select, textarea {
-  border: 1px solid #cbd5e1 !important;
-  background-color: #ffffff !important;
-  color: #0f172a !important;
-}
-
-/* Subtle default focus outline */
 input:focus, select:focus, textarea:focus {
-  border-color: #0f172a !important;
-  outline: none !important;
+  border-color: #666666;
+  outline: none;
 }
 
-/* Basic hover states */
-button:hover {
-  opacity: 0.9 !important;
+label {
+  display: block;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 5px;
 }
 
-/* Simple linear toast slide animation */
-@keyframes slide-in {
-  from {
-    transform: translateY(1rem);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+form {
+  margin-bottom: 20px;
 }
 
-.animate-slide-in {
-  animation: slide-in 0.1s linear forwards;
+/* Simple Flex Layout Utility for Downgraded UI */
+.row {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
 }
 
-
-/* Force-override filled buttons to a consistent neutral theme */
-button.bg-indigo-600,
-button.bg-rose-600,
-button.bg-amber-600,
-button.bg-emerald-600,
-button.bg-slate-800 {
-  background-color: #0f172a !important;
-  color: #ffffff !important;
-  border: 1px solid #0f172a !important;
+.flex-1 {
+  flex: 1;
 }
 
-button.bg-indigo-600:hover,
-button.bg-rose-600:hover,
-button.bg-amber-600:hover,
-button.bg-emerald-600:hover,
-button.bg-slate-800:hover {
-  background-color: #334155 !important;
-  border-color: #334155 !important;
-  color: #ffffff !important;
+.align-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+/* Tab container */
+.tabs {
+  border-bottom: 1px solid #cccccc;
+  margin-bottom: 15px;
+  padding-bottom: 0px;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 8px 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 0;
+}
+
+.tab-btn:hover {
+  background: #f5f5f5;
+}
+
+.tab-btn.active {
+  border-bottom-color: #000000;
+  color: #000000;
+}
+
+/* Simple Card Container */
+.card {
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 15px;
+  background-color: #ffffff;
+}
+
+/* Basic Modal Overlay styles (essential for dialog functions to work) */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+.modal-content {
+  background: #ffffff;
+  border: 1px solid #999999;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-sizing: border-box;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eeeeee;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+}
+
+/* Alignment and gaps */
+.gap-2 { gap: 8px; }
+.gap-3 { gap: 12px; }
+.gap-4 { gap: 16px; }
+
+.mb-4 { margin-bottom: 16px; }
+.mt-4 { margin-top: 16px; }
+
+/* Status indicators */
+.status-allocated {
+  color: #007700;
+  font-weight: bold;
+}
+
+.status-bench {
+  color: #bb7700;
+  font-weight: bold;
+}
+
+.status-inactive {
+  color: #888888;
+  font-weight: bold;
+}
+
+.error-banner {
+  background-color: #ffeeee;
+  border: 1px solid #ffcccc;
+  color: #cc0000;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.success-banner {
+  background-color: #eeffee;
+  border: 1px solid #ccffcc;
+  color: #008800;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
 }

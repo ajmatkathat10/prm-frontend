@@ -1,83 +1,42 @@
 import { useEffect } from "react";
-import { useNavigate, useLocation, Outlet } from "react-router-dom";
-import {
-  LayoutDashboard,
-  Users,
-  FolderKanban,
-  Clock,
-  Settings,
-  ShieldCheck,
-  Briefcase,
-  UserCircle,
-  Cpu,
-  History,
-  UserCheck,
-} from "lucide-react";
+import { useNavigate, useLocation, Outlet, Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { STRINGS } from "@/constants/strings";
 import { useDispatch } from "react-redux";
 import { apiSlice } from "@/store/apiSlice";
 import { Spinner } from "@/components/ui/Spinner";
-import { Sidebar } from "./dashboard/Sidebar";
-import { Header } from "./dashboard/Header";
 
 // Navigation links per role
-const navLinks: Record<string, { href: string; label: string; icon: React.ElementType }[]> = {
+const navLinks: Record<string, { href: string; label: string }[]> = {
   ADMIN: [
-    { href: "/dashboard/admin", label: STRINGS.DASHBOARD.OVERVIEW, icon: LayoutDashboard },
-    { href: "/dashboard/admin/resources", label: STRINGS.DASHBOARD.ADMIN_OPTION_EMPLOYEES_LABEL, icon: Users },
-    { href: "/dashboard/admin/projects", label: STRINGS.DASHBOARD.ADMIN_OPTION_PROJECTS_LABEL, icon: FolderKanban },
-    { href: "/dashboard/admin/allocations", label: STRINGS.DASHBOARD.ADMIN_OPTION_ALLOCATIONS_LABEL, icon: Briefcase },
-    { href: "/dashboard/admin/users", label: STRINGS.DASHBOARD.ADMIN_OPTION_USERS_LABEL, icon: UserCheck },
-    { href: "/dashboard/admin/settings", label: STRINGS.DASHBOARD.ADMIN_OPTION_SETTINGS_LABEL, icon: Settings },
+    { href: "/dashboard/admin", label: STRINGS.DASHBOARD.OVERVIEW },
+    { href: "/dashboard/admin/resources", label: STRINGS.DASHBOARD.ADMIN_OPTION_EMPLOYEES_LABEL },
+    { href: "/dashboard/admin/projects", label: STRINGS.DASHBOARD.ADMIN_OPTION_PROJECTS_LABEL },
+    { href: "/dashboard/admin/allocations", label: STRINGS.DASHBOARD.ADMIN_OPTION_ALLOCATIONS_LABEL },
+    { href: "/dashboard/admin/users", label: STRINGS.DASHBOARD.ADMIN_OPTION_USERS_LABEL },
+    { href: "/dashboard/admin/settings", label: STRINGS.DASHBOARD.ADMIN_OPTION_SETTINGS_LABEL },
   ],
   MANAGER: [
-    { href: "/dashboard/manager", label: STRINGS.DASHBOARD.OVERVIEW, icon: LayoutDashboard },
-    { href: "/dashboard/manager/resources", label: STRINGS.DASHBOARD.MANAGER_OPTION_RESOURCES_LABEL, icon: Users },
-    { href: "/dashboard/manager/allocate", label: STRINGS.DASHBOARD.MANAGER_OPTION_ALLOCATE_LABEL, icon: Briefcase },
-    { href: "/dashboard/manager/projects", label: STRINGS.DASHBOARD.MANAGER_OPTION_PROJECTS_LABEL, icon: FolderKanban },
-    { href: "/dashboard/manager/timesheets", label: STRINGS.DASHBOARD.MANAGER_OPTION_TIMESHEETS_LABEL, icon: Clock },
-    { href: "/dashboard/manager/ai", label: STRINGS.DASHBOARD.MANAGER_OPTION_AI_LABEL, icon: Cpu },
+    { href: "/dashboard/manager", label: STRINGS.DASHBOARD.OVERVIEW },
+    { href: "/dashboard/manager/resources", label: STRINGS.DASHBOARD.MANAGER_OPTION_RESOURCES_LABEL },
+    { href: "/dashboard/manager/allocate", label: STRINGS.DASHBOARD.MANAGER_OPTION_ALLOCATE_LABEL },
+    { href: "/dashboard/manager/projects", label: STRINGS.DASHBOARD.MANAGER_OPTION_PROJECTS_LABEL },
+    { href: "/dashboard/manager/timesheets", label: STRINGS.DASHBOARD.MANAGER_OPTION_TIMESHEETS_LABEL },
+    { href: "/dashboard/manager/ai", label: STRINGS.DASHBOARD.MANAGER_OPTION_AI_LABEL },
   ],
   EMPLOYEE: [
-    { href: "/dashboard/employee", label: STRINGS.DASHBOARD.OVERVIEW, icon: LayoutDashboard },
-    { href: "/dashboard/employee/timesheet", label: STRINGS.DASHBOARD.EMPLOYEE_OPTION_SUBMIT_TIMESHEET_LABEL, icon: Clock },
-    { href: "/dashboard/employee/timesheets", label: STRINGS.DASHBOARD.EMPLOYEE_OPTION_MY_TIMESHEETS_LABEL, icon: History },
-    { href: "/dashboard/employee/allocations", label: STRINGS.DASHBOARD.EMPLOYEE_OPTION_MY_ALLOCATIONS_LABEL, icon: Briefcase },
+    { href: "/dashboard/employee", label: STRINGS.DASHBOARD.OVERVIEW },
+    { href: "/dashboard/employee/timesheet", label: STRINGS.DASHBOARD.EMPLOYEE_OPTION_SUBMIT_TIMESHEET_LABEL },
+    { href: "/dashboard/employee/timesheets", label: STRINGS.DASHBOARD.EMPLOYEE_OPTION_MY_TIMESHEETS_LABEL },
+    { href: "/dashboard/employee/allocations", label: STRINGS.DASHBOARD.EMPLOYEE_OPTION_MY_ALLOCATIONS_LABEL },
   ],
-};
-
-const roleConfig = {
-  ADMIN: {
-    label: STRINGS.ROLES.ADMIN_FULL,
-    icon: ShieldCheck,
-    color: "text-rose-400",
-    bg: "bg-rose-600/20",
-    border: "border-rose-500/30",
-    badge: "bg-rose-900/40 text-rose-300 border-rose-700/50",
-  },
-  MANAGER: {
-    label: STRINGS.ROLES.MANAGER_FULL,
-    icon: Briefcase,
-    color: "text-amber-400",
-    bg: "bg-amber-600/20",
-    border: "border-amber-500/30",
-    badge: "bg-amber-900/40 text-amber-300 border-amber-700/50",
-  },
-  EMPLOYEE: {
-    label: STRINGS.ROLES.EMPLOYEE_FULL,
-    icon: UserCircle,
-    color: "text-indigo-400",
-    bg: "bg-indigo-600/20",
-    border: "border-indigo-500/30",
-    badge: "bg-indigo-900/40 text-indigo-300 border-indigo-700/50",
-  },
 };
 
 export default function DashboardLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const pathname = location.pathname;
+  const dispatch = useDispatch();
 
   const { user, isLoading: isUserLoading, isError, logout, logoutStatus: { isLoading: loggingOut } } = useAuth();
 
@@ -91,8 +50,6 @@ export default function DashboardLayout() {
     }
   }, [user, isUserLoading, isError, navigate, pathname]);
 
-  const dispatch = useDispatch();
-
   const handleLogout = async () => {
     try {
       await logout().unwrap();
@@ -105,36 +62,42 @@ export default function DashboardLayout() {
   };
 
   if (isUserLoading || !user) {
-    return (
-      <div className="min-h-screen bg-slate-955 text-slate-50 flex items-center justify-center">
-        <Spinner />
-      </div>
-    );
+    return <Spinner />;
   }
 
   const currentRole = user?.role ?? "EMPLOYEE";
-  const sidebarNavigationItems = navLinks[currentRole] ?? [];
-  const currentRoleConfig = roleConfig[currentRole];
+  const navigationItems = navLinks[currentRole] ?? [];
 
   return (
-    <div className="min-h-screen bg-slate-955 text-slate-50 flex">
-      <Sidebar
-        user={user}
-        roleConfiguration={currentRoleConfig}
-        sidebarNavigationItems={sidebarNavigationItems}
-        pathname={pathname}
-        handleLogout={handleLogout}
-        loggingOut={loggingOut}
-      />
-
-      <div className="flex-1 flex flex-col min-w-0">
-        <Header user={user} roleConfiguration={currentRoleConfig} />
-        <main className="flex-1 overflow-auto">
-          <div className="h-full">
-            <Outlet />
-          </div>
-        </main>
-      </div>
+    <div style={{ padding: "15px", fontFamily: "sans-serif" }}>
+      <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #ccc", paddingBottom: "10px", marginBottom: "15px" }}>
+        <div>
+          <strong>PRM System</strong> | {user.username} ({currentRole})
+        </div>
+        <nav style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+          {navigationItems.map(({ href, label }) => {
+            const isActive = pathname === href || (href !== `/dashboard/${currentRole.toLowerCase()}` && pathname.startsWith(href));
+            return (
+              <Link
+                key={href}
+                to={href}
+                style={{
+                  fontWeight: isActive ? "bold" : "normal",
+                  textDecoration: "none"
+                }}
+              >
+                {label}
+              </Link>
+            );
+          })}
+          <button onClick={handleLogout} disabled={loggingOut} style={{ marginLeft: "10px" }}>
+            {loggingOut ? "Logging out..." : "Logout"}
+          </button>
+        </nav>
+      </header>
+      <main>
+        <Outlet />
+      </main>
     </div>
   );
 }

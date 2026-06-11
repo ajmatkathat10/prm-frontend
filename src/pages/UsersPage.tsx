@@ -164,24 +164,16 @@ export default function UsersPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-slate-800">
+      <div className="tabs">
         <button
           onClick={() => setActiveTab('list')}
-          className={`px-5 py-3 font-semibold text-sm transition-colors border-b-2 -mb-[2px] ${
-            activeTab === 'list'
-              ? 'border-rose-500 text-rose-400'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
-          }`}
+          className={`tab-btn ${activeTab === 'list' ? 'active' : ''}`}
         >
           View All Users
         </button>
         <button
           onClick={() => setActiveTab('create')}
-          className={`px-5 py-3 font-semibold text-sm transition-colors border-b-2 -mb-[2px] ${
-            activeTab === 'create'
-              ? 'border-rose-500 text-rose-400'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
-          }`}
+          className={`tab-btn ${activeTab === 'create' ? 'active' : ''}`}
         >
           Provision User Account
         </button>
@@ -226,11 +218,7 @@ export default function UsersPage() {
                       </td>
                       <td className="px-6 py-4">
                         <span
-                          className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-bold ${
-                            u.isActive
-                              ? 'bg-emerald-500/15 text-emerald-400'
-                              : 'bg-rose-500/15 text-rose-455'
-                          }`}
+                          className={u.isActive ? 'status-allocated' : 'status-inactive'}
                         >
                           {u.isActive ? 'Active' : 'Inactive'}
                         </span>
@@ -410,10 +398,9 @@ export default function UsersPage() {
         </div>
       )}
 
-      {/* Reset Password Modal */}
       {selectedUserForReset && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
+        <div className="modal-overlay">
+          <div className="modal-content" style={{ maxWidth: '450px' }}>
             <div className="px-6 py-4 bg-slate-950 border-b border-slate-800 flex justify-between items-center">
               <div>
                 <h3 className="text-lg font-bold text-slate-50">Reset Password: {selectedUserForReset.username}</h3>
@@ -490,8 +477,8 @@ export default function UsersPage() {
 
       {/* Deactivate User confirmation modal */}
       {selectedUserForDeactivate && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-850 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl p-6 space-y-6">
+        <div className="modal-overlay">
+          <div className="modal-content" style={{ maxWidth: '450px' }}>
             <div className="flex gap-4">
               <div className="w-12 h-12 rounded-full bg-rose-500/10 border border-rose-500/20 flex items-center justify-center shrink-0">
                 <ShieldAlert className="w-6 h-6 text-rose-455" />
@@ -538,8 +525,8 @@ export default function UsersPage() {
 
       {/* Reactivate User confirmation modal */}
       {selectedUserForReactivate && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-850 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl p-6 space-y-6">
+        <div className="modal-overlay">
+          <div className="modal-content" style={{ maxWidth: '450px' }}>
             <div className="flex gap-4">
               <div className="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
                 <Check className="w-6 h-6 text-emerald-400" />
