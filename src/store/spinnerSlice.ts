@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-
-interface SpinnerState {
+import type { Reducer } from '@reduxjs/toolkit';
+export interface SpinnerState {
   isVisible: boolean;
 }
 
@@ -38,4 +38,4 @@ const spinnerSlice = createSlice({
 });
 
 export const { showSpinner, hideSpinner } = spinnerSlice.actions;
-export default spinnerSlice.reducer;
+export default spinnerSlice.reducer as Reducer<SpinnerState>;
