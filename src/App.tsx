@@ -9,7 +9,16 @@ import AllocationsPage from '@/pages/AllocationsPage';
 import UsersPage from '@/pages/UsersPage';
 import SettingsPage from '@/pages/SettingsPage';
 import ManagerDashboard from '@/pages/ManagerDashboard';
+import TeamResourcesPage from '@/pages/TeamResourcesPage';
+import AllocateResourcePage from '@/pages/AllocateResourcePage';
+import MyProjectsPage from '@/pages/MyProjectsPage';
+import TeamTimesheetsPage from '@/pages/TeamTimesheetsPage';
+import AiAssistantPage from '@/pages/AiAssistantPage';
 import EmployeeDashboard from '@/pages/EmployeeDashboard';
+import SubmitTimesheetPage from '@/pages/SubmitTimesheetPage';
+import MyTimesheetsPage from '@/pages/MyTimesheetsPage';
+import MyAllocationsPage from '@/pages/MyAllocationsPage';
+import ProfilePage from '@/pages/ProfilePage';
 import AuthLayout from '@/components/AuthLayout';
 import DashboardLayout from '@/components/DashboardLayout';
 import RoleGuard from '@/components/RoleGuard';
@@ -90,10 +99,82 @@ function App() {
             }
           />
           <Route
+            path="manager/resources"
+            element={
+              <RoleGuard allowedRoles={['MANAGER']}>
+                <TeamResourcesPage />
+              </RoleGuard>
+            }
+          />
+          <Route
+            path="manager/allocate"
+            element={
+              <RoleGuard allowedRoles={['MANAGER']}>
+                <AllocateResourcePage />
+              </RoleGuard>
+            }
+          />
+          <Route
+            path="manager/projects"
+            element={
+              <RoleGuard allowedRoles={['MANAGER']}>
+                <MyProjectsPage />
+              </RoleGuard>
+            }
+          />
+          <Route
+            path="manager/timesheets"
+            element={
+              <RoleGuard allowedRoles={['MANAGER']}>
+                <TeamTimesheetsPage />
+              </RoleGuard>
+            }
+          />
+          <Route
+            path="manager/ai"
+            element={
+              <RoleGuard allowedRoles={['MANAGER']}>
+                <AiAssistantPage />
+              </RoleGuard>
+            }
+          />
+          <Route
             path="employee"
             element={
               <RoleGuard allowedRoles={['EMPLOYEE']}>
                 <EmployeeDashboard />
+              </RoleGuard>
+            }
+          />
+          <Route
+            path="employee/timesheet"
+            element={
+              <RoleGuard allowedRoles={['EMPLOYEE']}>
+                <SubmitTimesheetPage />
+              </RoleGuard>
+            }
+          />
+          <Route
+            path="employee/timesheets"
+            element={
+              <RoleGuard allowedRoles={['EMPLOYEE']}>
+                <MyTimesheetsPage />
+              </RoleGuard>
+            }
+          />
+          <Route
+            path="employee/allocations"
+            element={
+              <RoleGuard allowedRoles={['EMPLOYEE']}>
+                <MyAllocationsPage />
+              </RoleGuard>
+            }
+          />
+          <Route
+            path="employee/profile"
+            element={
+              <RoleGuard allowedRoles={['EMPLOYEE']}>
+                <ProfilePage />
               </RoleGuard>
             }
           />

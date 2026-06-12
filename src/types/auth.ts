@@ -22,6 +22,13 @@ export interface CurrentUserResponse {
   user: SessionUser | null;
 }
 
+export interface LoginResponse {
+  success: boolean;
+  user?: SessionUser;
+  otpRequired?: boolean;
+  userId?: string;
+}
+
 export const ROLE_DASHBOARD_ROUTES: Record<UserRole, string> = {
   ADMIN: '/dashboard/admin',
   MANAGER: '/dashboard/manager',
