@@ -1,15 +1,15 @@
 import { apiSlice } from '../apiSlice';
-import type { AuthResponse, CurrentUserResponse, SessionUser } from '@/types/auth';
+import type { AuthResponse, CurrentUserResponse, SessionUser, LoginResponse } from '@/types/auth';
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation<SessionUser, { username: string; password: string }>({
+    login: builder.mutation<LoginResponse, { username: string; password: string }>({
       query: (credentials) => ({
         url: '/auth/login',
         method: 'POST',
         body: credentials,
       }),
-      transformResponse: (response: AuthResponse) => response.user,
+      transformResponse: (response: LoginResponse) => response,
       invalidatesTags: ['User'],
     }),
     logout: builder.mutation<void, void>({
@@ -33,6 +33,15 @@ export const authApiSlice = apiSlice.injectEndpoints({
       transformResponse: (response: AuthResponse) => response.user,
       invalidatesTags: ['User'],
     }),
+    verifyOtp: builder.mutation<SessionUser, { userId: string; otp: string }>({
+      query: (body) => ({
+        url: '/auth/verify-otp',
+        method: 'POST',
+        body,
+      }),
+      transformResponse: (response: AuthResponse) => response.user,
+      invalidatesTags: ['User'],
+    }),
   }),
 });
 
@@ -41,4 +50,5 @@ export const {
   useLogoutMutation,
   useGetCurrentUserQuery,
   useChangePasswordMutation,
+  useVerifyOtpMutation,
 } = authApiSlice;

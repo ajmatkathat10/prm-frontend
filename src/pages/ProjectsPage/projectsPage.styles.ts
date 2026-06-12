@@ -1,0 +1,232 @@
+import { COLORS } from "@/constants/colors";
+
+export const styles = {
+  detailsContainer: {
+    border: "1px solid #cccccc",
+    borderRadius: "8px",
+    padding: "20px",
+    backgroundColor: "#ffffff",
+  },
+  detailsHeader: {
+    fontSize: "18px",
+    fontWeight: "bold" as const,
+    margin: "0 0 5px 0",
+    color: "#111827",
+  },
+  detailsDescription: {
+    fontSize: "13px",
+    color: "#4b5563",
+    margin: 0,
+  },
+  statsRow: {
+    display: "flex",
+    gap: "20px",
+    backgroundColor: "#f9fafb",
+    border: "1px solid #e5e7eb",
+    padding: "15px",
+    borderRadius: "8px",
+    textAlign: "center" as const,
+    justifyContent: "space-around",
+    margin: "15px 0",
+  },
+  statsLabel: {
+    fontSize: "11px",
+    color: COLORS.text.muted,
+    fontWeight: "bold" as const,
+    textTransform: "uppercase" as const,
+  },
+  statsValueTotal: {
+    fontSize: "20px",
+    fontWeight: "bold" as const,
+    color: "#111827",
+    marginTop: "4px",
+  },
+  statsValueCompleted: {
+    fontSize: "20px",
+    fontWeight: "bold" as const,
+    color: COLORS.status.success,
+    marginTop: "4px",
+  },
+  statsValueRemaining: {
+    fontSize: "20px",
+    fontWeight: "bold" as const,
+    color: COLORS.primary.DEFAULT,
+    marginTop: "4px",
+  },
+  borderLeftSeparator: {
+    borderLeft: "1px solid #e5e7eb",
+    paddingLeft: "20px",
+  },
+  section: {
+    margin: "20px 0",
+  },
+  sectionTitleRow: {
+    fontSize: "14px",
+    fontWeight: "bold" as const,
+    margin: "0 0 12px 0",
+    display: "flex",
+    alignItems: "center",
+    gap: "6px",
+    color: "#111827",
+  },
+  emptyListMessage: {
+    fontSize: "13px",
+    color: COLORS.text.muted,
+    fontStyle: "italic",
+    margin: 0,
+  },
+  milestonesList: {
+    display: "flex",
+    flexDirection: "column" as const,
+    gap: "10px",
+    maxHeight: "300px",
+    overflowY: "auto" as const,
+    paddingRight: "4px",
+  },
+  milestoneItem: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    border: "1px solid #e5e7eb",
+    borderRadius: "8px",
+    padding: "12px 15px",
+    backgroundColor: "#ffffff",
+    boxShadow: "0 1px 2px rgba(0,0, 0, 0.05)",
+  },
+  milestoneTitle: {
+    fontWeight: "600" as const,
+    fontSize: "14px",
+    color: "#111827",
+    marginBottom: "4px",
+  },
+  milestoneMetaRow: {
+    display: "flex",
+    gap: "15px",
+    fontSize: "12px",
+    color: COLORS.text.muted,
+  },
+  dueIconWrapper: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "4px",
+  },
+  dueIcon: {
+    color: "#9ca3af",
+  },
+  milestonePoints: {
+    color: COLORS.status.warning,
+    fontWeight: "500" as const,
+  },
+  statusSelect: {
+    padding: "4px 8px",
+    fontSize: "12px",
+    borderRadius: "4px",
+    border: "1px solid #cccccc",
+    backgroundColor: "#ffffff",
+    color: "#374151",
+  },
+  formDivider: {
+    borderTop: "1px solid #e5e7eb",
+    paddingTop: "20px",
+  },
+  formContainer: {
+    display: "flex",
+    flexDirection: "column" as const,
+    gap: "12px",
+  },
+  fullWidthInput: {
+    width: "100%",
+    padding: "8px",
+    fontSize: "13px",
+    borderRadius: "4px",
+    border: "1px solid #ccc",
+  },
+  flexRowGap12: {
+    display: "flex",
+    gap: "12px",
+  },
+  flexOne: {
+    flex: 1,
+  },
+  fieldLabelSmall: {
+    display: "block",
+    fontSize: "11px",
+    color: COLORS.text.muted,
+    fontWeight: "bold" as const,
+    marginBottom: "4px",
+  },
+  smallInput: {
+    width: "100%",
+    padding: "6px",
+    fontSize: "13px",
+    borderRadius: "4px",
+    border: "1px solid #ccc",
+  },
+  addMilestoneButton: {
+    padding: "8px 16px",
+    backgroundColor: COLORS.status.info,
+    color: "white",
+    border: "none",
+    borderRadius: "4px",
+    fontWeight: "bold" as const,
+    cursor: "pointer",
+    fontSize: "13px",
+    marginTop: "6px",
+  },
+  editPanel: {
+    marginTop: "20px",
+    border: "1px solid #999",
+  },
+  panelHeaderRow: {
+    display: "flex",
+    justifyContent: "space-between",
+    borderBottom: "1px solid #ccc",
+    paddingBottom: "10px",
+    marginBottom: "15px",
+  },
+  panelTitle: {
+    margin: 0,
+  },
+  panelSubtitle: {
+    margin: "5px 0 0 0",
+    fontSize: "12px",
+    color: COLORS.text.muted,
+  },
+  editFormContainer: {
+    display: "flex",
+    flexDirection: "column" as const,
+    gap: "15px",
+  },
+  widthFull: {
+    width: "100%",
+  },
+  widthFullNoResize: {
+    width: "100%",
+    resize: "none" as const,
+  },
+  flexWrapRow: {
+    display: "flex",
+    gap: "15px",
+    flexWrap: "wrap" as const,
+  },
+  flexOneMinWidth140: {
+    flex: 1,
+    minWidth: "140px",
+  },
+  flexOneMinWidth120: {
+    flex: 1,
+    minWidth: "120px",
+  },
+  flexOneMinWidth150: {
+    flex: 1,
+    minWidth: "150px",
+  },
+  flexOneMinWidth100: {
+    flex: 1,
+    minWidth: "100px",
+  },
+  actionsRow: {
+    display: "flex",
+    gap: "10px",
+  },
+};

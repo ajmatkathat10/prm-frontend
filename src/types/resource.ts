@@ -19,6 +19,7 @@ export interface Resource {
   designation: string;
   status: 'BENCH' | 'ALLOCATED' | 'INACTIVE';
   isActive: boolean;
+  timesheetAccessFrozen?: boolean;
   skills: ResourceSkill[];
   createdAt?: string;
   updatedAt?: string;

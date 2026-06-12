@@ -15,7 +15,31 @@ export const allocationApiSlice = apiSlice.injectEndpoints({
       transformResponse: (response: AllocationsResponse) => response.allocations,
       providesTags: ['Allocation'],
     }),
+    createAllocation: builder.mutation<
+      Allocation,
+      { resourceId: string; projectId: string; utilisationPercent: number; fromDate: string; toDate: string }
+    >({
+      query: (body) => ({
+        url: '/allocations',
+        method: 'POST',
+        body,
+      }),
+      transformResponse: (response: { success: boolean; allocation: Allocation }) => response.allocation,
+      invalidatesTags: ['Allocation', 'Resource', 'Project'],
+    }),
+    endAllocation: builder.mutation<Allocation, string>({
+      query: (id) => ({
+        url: `/allocations/${id}/end`,
+        method: 'PUT',
+      }),
+      transformResponse: (response: { success: boolean; allocation: Allocation }) => response.allocation,
+      invalidatesTags: ['Allocation', 'Resource', 'Project'],
+    }),
   }),
 });
 
-export const { useGetAllAllocationsQuery } = allocationApiSlice;
+export const {
+  useGetAllAllocationsQuery,
+  useCreateAllocationMutation,
+  useEndAllocationMutation,
+} = allocationApiSlice;

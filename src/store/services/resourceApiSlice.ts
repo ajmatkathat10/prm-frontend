@@ -63,6 +63,19 @@ export const resourceApiSlice = apiSlice.injectEndpoints({
       transformResponse: (response: ResourceResponse) => response.resource,
       invalidatesTags: ['Resource'],
     }),
+    getMyResource: builder.query<Resource, void>({
+      query: () => '/resources/me',
+      transformResponse: (response: ResourceResponse) => response.resource,
+      providesTags: ['Resource'],
+    }),
+    restoreTimesheetAccess: builder.mutation<Resource, string>({
+      query: (id) => ({
+        url: `/resources/${id}/restore-timesheet-access`,
+        method: 'POST',
+      }),
+      transformResponse: (response: ResourceResponse) => response.resource,
+      invalidatesTags: ['Resource'],
+    }),
   }),
 });
 
@@ -73,4 +86,6 @@ export const {
   useUpdateResourceSkillMutation,
   useRemoveResourceSkillMutation,
   useAssignManagerMutation,
+  useGetMyResourceQuery,
+  useRestoreTimesheetAccessMutation,
 } = resourceApiSlice;
